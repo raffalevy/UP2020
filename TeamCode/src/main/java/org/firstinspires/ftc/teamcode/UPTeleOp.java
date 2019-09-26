@@ -4,7 +4,11 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import static org.firstinspires.ftc.teamcode.Constants.*;
+import static org.firstinspires.ftc.teamcode.Constants.DRIVE_POWER;
+import static org.firstinspires.ftc.teamcode.Constants.DRIVE_POWER_SLOW;
+import static org.firstinspires.ftc.teamcode.Constants.DRIVE_STICK_THRESHOLD;
+import static org.firstinspires.ftc.teamcode.Constants.DRIVE_STICK_THRESHOLD_SQUARED;
+import static org.firstinspires.ftc.teamcode.Constants.TRIGGER_THRESHOLD;
 
 @TeleOp(name = "UPTeleOp", group = "TeleOp")
 public class UPTeleOp extends OpMode {
@@ -56,11 +60,6 @@ public class UPTeleOp extends OpMode {
         float leftX = gamepad1.left_stick_x;
         float rightX = gamepad1.right_stick_x;
 
-        float leftMagSquared = leftX * leftX + leftY * leftY;
-
-        double forwardPower;
-        double rightPower;
-
         double pow;
         if (gamepad1.right_trigger >= TRIGGER_THRESHOLD) {
             pow = DRIVE_POWER_SLOW;
@@ -68,46 +67,10 @@ public class UPTeleOp extends OpMode {
             pow = DRIVE_POWER;
         }
 
-        // Calculate strafe from left stick
-        if (leftMagSquared >= DRIVE_LEFT_STICK_THRESHOLD_SQUARED) {
-            if (leftY > leftX) {
-                if (leftY > -leftX) {
-                    // Go forward
-                    forwardPower = 1;
-                    rightPower = 0;
-                } else {
-                    // Go left
-                    forwardPower = 0;
-                    rightPower = -1;
-                }
-            } else {
-                if (leftY > -leftX) {
-                    // Go right
-                    forwardPower = 0;
-                    rightPower = 1;
-                } else {
-                    // Go backwards
-                    forwardPower = -1;
-                    rightPower = 0;
-                }
-            }
+        if (leftX * leftX + leftY * leftY >= DRIVE_STICK_THRESHOLD_SQUARED || Math.abs(rightX) >= DRIVE_STICK_THRESHOLD) {
+            rb.drive(leftX, leftY, rightX, pow);
         } else {
-            forwardPower = 0;
-            rightPower = 0;
+            rb.driveStop();
         }
-
-        double clockwisePower;
-
-        if (Math.abs(rightX) > DRIVE_STICK_THRESHOLD) {
-            clockwisePower = rightX;
-        } else {
-            clockwisePower = 0;
-        }
-
-        forwardPower *= pow;
-        rightPower *= pow;
-        clockwisePower *= pow;
-
-        rb.drive(forwardPower, rightPower, clockwisePower);
     }
 }
