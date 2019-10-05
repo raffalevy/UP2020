@@ -1,7 +1,9 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
 
 /**
@@ -17,6 +19,9 @@ public class OmniRobot {
     DcMotor blMotor = null;
     DcMotor brMotor = null;
 
+    Servo leftServo = null;
+    Servo rightServo = null;
+
     /**
      * Initialize all motors and servos
      */
@@ -26,6 +31,10 @@ public class OmniRobot {
         frMotor = hardwareMap.get(DcMotor.class, "FR");
         blMotor = hardwareMap.get(DcMotor.class, "BL");
         brMotor = hardwareMap.get(DcMotor.class, "BR");
+
+        // Initialize servos
+        leftServo = hardwareMap.get(Servo.class, "LS");
+        rightServo = hardwareMap.get(Servo.class, "RS");
 
         // Set motor directions
         flMotor.setDirection(DcMotor.Direction.FORWARD);
