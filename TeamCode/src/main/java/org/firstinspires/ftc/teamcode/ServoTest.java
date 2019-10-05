@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.robotcore.hardware.Servo;
 
 import static org.firstinspires.ftc.teamcode.Constants.DRIVE_POWER;
 import static org.firstinspires.ftc.teamcode.Constants.DRIVE_POWER_SLOW;
@@ -19,6 +20,8 @@ public class ServoTest extends OpMode {
     private ElapsedTime runtime = new ElapsedTime();
 
     private OmniRobot rb = new OmniRobot();
+
+    private Servo servo = null;
 
     /**
      * This method will be called once when the INIT button is pressed.
@@ -43,6 +46,8 @@ public class ServoTest extends OpMode {
 
     public boolean leftWasDown = false;
     public boolean rightWasDown = false;
+    public double servoPosition = .5;
+    private double increment = .05;
 
     /**
      * This method will be called repeatedly in a loop while this op mode is running
@@ -60,13 +65,25 @@ public class ServoTest extends OpMode {
             leftWasDown = false;
         }
 
-        if (gamepad2.left_bumper) {
+        if (gamepad1.right_bumper) {
             if (!rightWasDown) {
                 rightWasDown = true;
             }
         } else {
             rightWasDown = false;
         }
+        if (leftWasDown){
+            servoPosition -= increment;
+        }
+        if (rightWasDown){
+            servoPosition += increment;
+        }
+        if (gamepad1.a){
+          servo.setPosition(servoPosition);
+        }
+        telemetry.addData("ServoPosition", servoPosition);
+        telemetry.update();
+
     }
 
 }
