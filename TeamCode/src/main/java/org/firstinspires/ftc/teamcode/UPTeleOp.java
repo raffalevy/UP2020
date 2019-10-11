@@ -4,11 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import static org.firstinspires.ftc.teamcode.Constants.DRIVE_POWER;
-import static org.firstinspires.ftc.teamcode.Constants.DRIVE_POWER_SLOW;
-import static org.firstinspires.ftc.teamcode.Constants.DRIVE_STICK_THRESHOLD;
-import static org.firstinspires.ftc.teamcode.Constants.DRIVE_STICK_THRESHOLD_SQUARED;
-import static org.firstinspires.ftc.teamcode.Constants.TRIGGER_THRESHOLD;
+import static org.firstinspires.ftc.teamcode.Constants.*;
 
 @TeleOp(name = "UPTeleOp", group = "TeleOp")
 public class UPTeleOp extends OpMode {
@@ -28,6 +24,8 @@ public class UPTeleOp extends OpMode {
         telemetry.addData("Status", "Initializing");
 
         rb.init(hardwareMap);
+        rb.leftServo.setPosition(LS_BACK);
+        rb.rightServo.setPosition(RS_BACK);
 
         telemetry.addData("Status", "Initialized");
     }
@@ -50,6 +48,10 @@ public class UPTeleOp extends OpMode {
 
         // Only use the sticks to drive if the dpad is not being pressed
         driveChassis();
+
+        moveGrabbers();
+
+        moveLift();
     }
 
     /**
@@ -71,6 +73,30 @@ public class UPTeleOp extends OpMode {
             rb.drive(leftX, leftY, rightX, pow);
         } else {
             rb.driveStop();
+        }
+    }
+
+    private void moveGrabbers() {
+        if (gamepad2.left_trigger >= TRIGGER_THRESHOLD) {
+            rb.leftServo.setPosition(LS_BACK);
+            rb.rightServo.setPosition(RS_BACK);
+        } else if (gamepad2.right_trigger >= TRIGGER_THRESHOLD) {
+            rb.leftServo.setPosition(LS_PARALLEL);
+            rb.rightServo.setPosition(RS_PARALLEL);
+        } else if (gamepad2.left_bumper) {
+            rb.leftServo.setPosition(LS_PERP);
+            rb.rightServo.setPosition(RS_PERP);
+        } else if (gamepad2.right_bumper) {
+            rb.leftServo.setPosition(LS_GRAB);
+            rb.rightServo.setPosition(RS_GRAB);
+        }
+    }
+
+    private void moveLift() {
+        if (Math.abs(gamepad2.left_stick_y) >= 0.5) {
+            rb.liftMotor.setPower(gamepad2.left_stick_y / 2);
+        } else {
+            rb.liftMotor.setPower(0);
         }
     }
 }
