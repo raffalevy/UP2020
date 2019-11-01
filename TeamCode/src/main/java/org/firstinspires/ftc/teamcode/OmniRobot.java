@@ -21,6 +21,7 @@ public class OmniRobot {
     DcMotor brMotor = null;
 
     DcMotor liftMotor = null;
+    DcMotor leadscrewMotor = null;
 
     Servo leftServo = null;
     Servo rightServo = null;
@@ -40,6 +41,7 @@ public class OmniRobot {
         rightServo = hardwareMap.get(Servo.class, "RS");
 
         liftMotor = hardwareMap.get(DcMotor.class, "LIFT");
+        leadscrewMotor = hardwareMap.get(DcMotor.class, "LEAD");
 
         // Set motor directions
         flMotor.setDirection(DcMotor.Direction.FORWARD);
@@ -48,6 +50,7 @@ public class OmniRobot {
         brMotor.setDirection(DcMotor.Direction.FORWARD);
 
         liftMotor.setDirection(DcMotor.Direction.FORWARD);
+        leadscrewMotor.setDirection(DcMotor.Direction.FORWARD);
 
         // Set all motors to brake when power is zero
         flMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -56,6 +59,7 @@ public class OmniRobot {
         brMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         liftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        leadscrewMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
 
     /**

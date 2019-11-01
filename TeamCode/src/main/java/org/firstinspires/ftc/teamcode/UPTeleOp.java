@@ -52,6 +52,7 @@ public class UPTeleOp extends OpMode {
         moveGrabbers();
 
         moveLift();
+        moveLeadscrew();
     }
 
     /**
@@ -97,6 +98,14 @@ public class UPTeleOp extends OpMode {
             rb.liftMotor.setPower(gamepad2.left_stick_y / 2);
         } else {
             rb.liftMotor.setPower(0);
+        }
+    }
+
+    private void moveLeadscrew() {
+        if (Math.abs(gamepad2.right_stick_y) >= 0.5) {
+            rb.leadscrewMotor.setPower(gamepad2.right_stick_y / 2);
+        } else {
+            rb.leadscrewMotor.setPower(0);
         }
     }
 }
