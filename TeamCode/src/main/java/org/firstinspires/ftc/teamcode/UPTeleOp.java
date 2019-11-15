@@ -82,11 +82,11 @@ public class UPTeleOp extends OpMode {
             rb.leftServo.setPosition(LS_BACK);
             rb.rightServo.setPosition(RS_BACK);
         } else if (gamepad2.right_trigger >= TRIGGER_THRESHOLD) {
-            rb.leftServo.setPosition(LS_PARALLEL);
-            rb.rightServo.setPosition(RS_PARALLEL);
+            rb.leftServo.setPosition(LS_OPEN);
+            rb.rightServo.setPosition(RS_OPEN);
         } else if (gamepad2.left_bumper) {
-            rb.leftServo.setPosition(LS_PERP);
-            rb.rightServo.setPosition(RS_PERP);
+            rb.leftServo.setPosition(LS_OUT);
+            rb.rightServo.setPosition(RS_OUT);
         } else if (gamepad2.right_bumper) {
             rb.leftServo.setPosition(LS_GRAB);
             rb.rightServo.setPosition(RS_GRAB);

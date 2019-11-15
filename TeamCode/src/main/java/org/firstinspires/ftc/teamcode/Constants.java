@@ -14,15 +14,15 @@ public final class Constants {
     public static final float TRIGGER_THRESHOLD = .65f;
 
     // Servo positions
-    public static final double LS_GRAB = 0.975;
-    public static final double LS_PARALLEL = 0.875;
-    public static final double LS_PERP = 0.45;
-    public static final double LS_BACK = 0.15;
+    public static final double LS_GRAB = 0.7;
+    public static final double LS_OPEN = 0.5;
+    public static final double LS_OUT = 0.25;
+    public static final double LS_BACK = 0.1;
 
-    public static final double RS_GRAB = 0.075;
-    public static final double RS_PARALLEL = 0.175;
-    public static final double RS_PERP = 0.55;
-    public static final double RS_BACK = 0.85;
+    public static final double RS_GRAB = 0.3;
+    public static final double RS_OPEN = 0.5;
+    public static final double RS_OUT = 0.7;
+    public static final double RS_BACK = 0.9;
 
 
 
