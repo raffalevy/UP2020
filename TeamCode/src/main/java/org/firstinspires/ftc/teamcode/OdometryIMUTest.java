@@ -7,8 +7,8 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
-@TeleOp(name = "OdometryTest", group = "EncoderTest")
-public class OdometryTest extends OpMode {
+@TeleOp(name = "OdometryIMUTest", group = "EncoderTest")
+public class OdometryIMUTest extends OpMode {
 
     /**
      * Amount of time elapsed
@@ -17,7 +17,7 @@ public class OdometryTest extends OpMode {
 
     OmniRobot rb = new OmniRobot();
 
-    Odometry odometry = new Odometry();
+    OdometryIMU odometry = new OdometryIMU();
 
     /**
      * This method will be called once when the INIT button is pressed.
@@ -38,6 +38,8 @@ public class OdometryTest extends OpMode {
         resetEncoder(rb.blMotor);
         resetEncoder(rb.brMotor);
 
+        odometry.init(hardwareMap);
+
         telemetry.addData("Status", "Initialized");
     }
 
@@ -53,13 +55,9 @@ public class OdometryTest extends OpMode {
     public void start() {
         // Reset elapsed time
         runtime.reset();
-        telemetryStatic = telemetry;
+        odometry.start(rb.frMotor.getCurrentPosition(),rb.flMotor.getCurrentPosition(),rb.blMotor.getCurrentPosition());
     }
 
-
-
-    int i = 0;
-    int j = 0;
 
     /**
      * This method will be called repeatedly in a loop while this op mode is running
@@ -68,19 +66,7 @@ public class OdometryTest extends OpMode {
     public void loop() {
         telemetry.addData("Status", "Looping");
 
-//        if (gamepad1.b) {
-//            resetEncoder(rb.frMotor);
-//            resetEncoder(rb.flMotor);
-//            resetEncoder(rb.blMotor);
-//            resetEncoder(rb.brMotor);
-//        }
-
-
-//        if (i % 100 == 0) {
-            odometry.update(rb.frMotor.getCurrentPosition(),rb.flMotor.getCurrentPosition(),rb.blMotor.getCurrentPosition());
-//            j++;
-//        }
-//        telemetry.addData("j", j);
+        odometry.update(rb.frMotor.getCurrentPosition(),rb.flMotor.getCurrentPosition(),rb.blMotor.getCurrentPosition());
 
         telemetry.addData("x", odometry.getX());
         telemetry.addData("y", odometry.getY());
@@ -92,9 +78,5 @@ public class OdometryTest extends OpMode {
         telemetry.addData("BR", rb.brMotor.getCurrentPosition());
 
         telemetry.update();
-        i++;
     }
-
-    public static Telemetry telemetryStatic = null;
-
 }

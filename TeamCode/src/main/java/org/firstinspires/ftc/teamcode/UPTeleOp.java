@@ -23,7 +23,7 @@ public class UPTeleOp extends OpMode {
     public void init() {
         telemetry.addData("Status", "Initializing");
 
-        rb.init(hardwareMap);
+        rb.init(hardwareMap, null);
         rb.leftServo.setPosition(LS_BACK);
         rb.rightServo.setPosition(RS_BACK);
 

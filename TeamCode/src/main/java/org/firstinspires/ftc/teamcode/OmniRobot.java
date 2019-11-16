@@ -1,8 +1,8 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
@@ -26,10 +26,14 @@ public class OmniRobot {
     Servo leftServo = null;
     Servo rightServo = null;
 
+    LinearOpMode opMode;
+
     /**
      * Initialize all motors and servos
      */
-    void init(HardwareMap hardwareMap) {
+    void init(HardwareMap hardwareMap, LinearOpMode opMode) {
+        this.opMode = opMode;
+
         // Initialize drive motors
         flMotor = hardwareMap.get(DcMotor.class, "FL");
         frMotor = hardwareMap.get(DcMotor.class, "FR");
@@ -124,5 +128,116 @@ public class OmniRobot {
         frMotor.setPower(frPower * multiplier);
         blMotor.setPower(blPower * multiplier);
         brMotor.setPower(brPower * multiplier);
+    }
+
+    void runLeadscrewToPosition(int targetPosition) {
+        if (leadscrewMotor.getCurrentPosition() > targetPosition) {
+            leadscrewMotor.setPower(-1);
+            while (opMode.opModeIsActive() && leadscrewMotor.getCurrentPosition() > targetPosition) {
+                Thread.yield();
+            }
+            leadscrewMotor.setPower(0);
+        } else if (leadscrewMotor.getCurrentPosition() < targetPosition) {
+            leadscrewMotor.setPower(1);
+            while (opMode.opModeIsActive() && leadscrewMotor.getCurrentPosition() < targetPosition) {
+                Thread.yield();
+            }
+            leadscrewMotor.setPower(0);
+        }
+    }
+
+    void updateOdometry(OdometryIMU odometry) {
+        odometry.update(frMotor.getCurrentPosition(), flMotor.getCurrentPosition(), blMotor.getCurrentPosition());
+    }
+
+    void driveForward(double power) {
+        flMotor.setPower(power);
+        blMotor.setPower(power);
+        frMotor.setPower(-power);
+        brMotor.setPower(-power);
+    }
+
+    void driveRight(double power) {
+        flMotor.setPower(power);
+        blMotor.setPower(-power);
+        frMotor.setPower(power);
+        brMotor.setPower(-power);
+    }
+
+    void turnClockwise(double power) {
+        flMotor.setPower(power);
+        blMotor.setPower(power);
+        frMotor.setPower(power);
+        brMotor.setPower(power);
+    }
+
+    void goToX(double targetX, double power, OdometryIMU odometry) {
+        updateOdometry(odometry);
+        if (odometry.getX() < targetX) {
+            driveRight(power);
+            while (opMode.opModeIsActive() && odometry.getX() < targetX) {
+                updateOdometry(odometry);
+                Thread.yield();
+                opMode.telemetry.update();
+            }
+            driveStop();
+            updateOdometry(odometry);
+        } else if (odometry.getX() > targetX) {
+            driveRight(-power);
+            while (opMode.opModeIsActive() && odometry.getX() > targetX) {
+                updateOdometry(odometry);
+                Thread.yield();
+                opMode.telemetry.update();
+            }
+            driveStop();
+            updateOdometry(odometry);
+        }
+    }
+
+    void goToY(double targetY, double power, OdometryIMU odometry) {
+        updateOdometry(odometry);
+        if (odometry.getY() < targetY) {
+            driveForward(power);
+            while (opMode.opModeIsActive() && odometry.getY() < targetY) {
+                updateOdometry(odometry);
+                Thread.yield();
+                opMode.telemetry.update();
+            }
+            driveStop();
+            updateOdometry(odometry);
+        } else if (odometry.getY() > targetY) {
+            driveForward(-power);
+            while (opMode.opModeIsActive() && odometry.getY() > targetY) {
+                updateOdometry(odometry);
+                Thread.yield();
+                opMode.telemetry.update();
+            }
+            driveStop();
+            updateOdometry(odometry);
+        }
+    }
+
+    public static double normalizeTheta(double theta) {
+        return theta - 2 * Math.PI * Math.floor((theta + Math.PI) / 2 * Math.PI);
+    }
+
+    public static double angleDiff(double theta1, double theta2) {
+        return Math.atan2(Math.sin(theta1-theta2), Math.cos(theta1-theta2));
+    }
+
+    public static final double THETA_TOLERANCE = 0.17;
+
+    void goClockwiseToTheta(double targetTheta, double power, OdometryIMU odometry) {
+        updateOdometry(odometry);
+        if (angleDiff(targetTheta, odometry.getTheta()) > THETA_TOLERANCE) {
+            turnClockwise(power);
+            while (opMode.opModeIsActive() && angleDiff(targetTheta, odometry.getTheta()) > THETA_TOLERANCE) {
+                updateOdometry(odometry);
+                Thread.yield();
+                opMode.telemetry.update();
+            }
+            driveStop();
+        }
+        updateOdometry(odometry);
     }
 }

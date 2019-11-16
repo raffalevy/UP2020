@@ -26,7 +26,7 @@ public abstract class ServoTest extends OpMode {
     public void init() {
         telemetry.addData("Status", "Initializing");
 
-        rb.init(hardwareMap);
+        rb.init(hardwareMap, null);
         servo = getTestServo();
 
         telemetry.addData("Status", "Initialized");

@@ -5,8 +5,8 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-@TeleOp(name = "WheelEncoderTest", group = "EncoderTest")
-public class WheelEncoderTest extends OpMode {
+@TeleOp(name = "IMUTest", group = "EncoderTest")
+public class IMUTest extends OpMode {
 
     /**
      * Amount of time elapsed
@@ -14,6 +14,8 @@ public class WheelEncoderTest extends OpMode {
     private ElapsedTime runtime = new ElapsedTime();
 
     OmniRobot rb = new OmniRobot();
+
+    IMU imu = new IMU();
 
     /**
      * This method will be called once when the INIT button is pressed.
@@ -29,49 +31,34 @@ public class WheelEncoderTest extends OpMode {
         rb.blMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         rb.brMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
 
-        resetEncoder(rb.frMotor);
-        resetEncoder(rb.flMotor);
-        resetEncoder(rb.blMotor);
-        resetEncoder(rb.brMotor);
+        imu.initIMU(hardwareMap);
 
         telemetry.addData("Status", "Initialized");
     }
 
-    public static void resetEncoder(DcMotor motor) {
-        motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-    }
+    float startingAngle = 0;
 
-    /**
-     * This method will be called once when the PLAY button is first pressed.
-     */
     @Override
     public void start() {
-        // Reset elapsed time
         runtime.reset();
+        imu.update();
+        startingAngle = imu.getZAngle();
     }
 
-
-    /**
-     * This method will be called repeatedly in a loop while this op mode is running
-     */
     @Override
     public void loop() {
         telemetry.addData("Status", "Looping");
 
-        if (gamepad1.b) {
-            resetEncoder(rb.frMotor);
-            resetEncoder(rb.flMotor);
-            resetEncoder(rb.blMotor);
-            resetEncoder(rb.brMotor);
-        }
+        imu.update();
 
-        telemetry.addData("FR", rb.frMotor.getCurrentPosition());
-        telemetry.addData("FL", rb.flMotor.getCurrentPosition());
-        telemetry.addData("BL", rb.blMotor.getCurrentPosition());
-        telemetry.addData("BR", rb.brMotor.getCurrentPosition());
+        telemetry.addLine("Orientation:");
+        telemetry.addData("ZA", imu.getZAngle() - startingAngle);
+        telemetry.addData("Z", imu.getZAngle());
+        telemetry.addData("Y", imu.getYAngle());
+        telemetry.addData("X", imu.getXAngle());
 
         telemetry.update();
+
     }
 
 }

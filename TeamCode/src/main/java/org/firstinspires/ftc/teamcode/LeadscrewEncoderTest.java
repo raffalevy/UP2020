@@ -5,19 +5,15 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.robotcore.external.Telemetry;
-
-@TeleOp(name = "OdometryTest", group = "EncoderTest")
-public class OdometryTest extends OpMode {
-
+@TeleOp(name = "LeadscrewEncoderTest", group = "EncoderTest")
+public class LeadscrewEncoderTest extends OpMode {
+//-1250
     /**
      * Amount of time elapsed
      */
     private ElapsedTime runtime = new ElapsedTime();
 
     OmniRobot rb = new OmniRobot();
-
-    Odometry odometry = new Odometry();
 
     /**
      * This method will be called once when the INIT button is pressed.
@@ -32,11 +28,9 @@ public class OdometryTest extends OpMode {
         rb.frMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         rb.blMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         rb.brMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        rb.leadscrewMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
 
-        resetEncoder(rb.frMotor);
-        resetEncoder(rb.flMotor);
-        resetEncoder(rb.blMotor);
-        resetEncoder(rb.brMotor);
+        resetEncoder(rb.leadscrewMotor);
 
         telemetry.addData("Status", "Initialized");
     }
@@ -53,13 +47,8 @@ public class OdometryTest extends OpMode {
     public void start() {
         // Reset elapsed time
         runtime.reset();
-        telemetryStatic = telemetry;
     }
 
-
-
-    int i = 0;
-    int j = 0;
 
     /**
      * This method will be called repeatedly in a loop while this op mode is running
@@ -68,33 +57,13 @@ public class OdometryTest extends OpMode {
     public void loop() {
         telemetry.addData("Status", "Looping");
 
-//        if (gamepad1.b) {
-//            resetEncoder(rb.frMotor);
-//            resetEncoder(rb.flMotor);
-//            resetEncoder(rb.blMotor);
-//            resetEncoder(rb.brMotor);
-//        }
+        if (gamepad1.b) {
+            resetEncoder(rb.leadscrewMotor);
+        }
 
-
-//        if (i % 100 == 0) {
-            odometry.update(rb.frMotor.getCurrentPosition(),rb.flMotor.getCurrentPosition(),rb.blMotor.getCurrentPosition());
-//            j++;
-//        }
-//        telemetry.addData("j", j);
-
-        telemetry.addData("x", odometry.getX());
-        telemetry.addData("y", odometry.getY());
-        telemetry.addData("theta", odometry.getTheta());
-
-        telemetry.addData("FR", rb.frMotor.getCurrentPosition());
-        telemetry.addData("FL", rb.flMotor.getCurrentPosition());
-        telemetry.addData("BL", rb.blMotor.getCurrentPosition());
-        telemetry.addData("BR", rb.brMotor.getCurrentPosition());
+        telemetry.addData("LSc Position", rb.leadscrewMotor.getCurrentPosition());
 
         telemetry.update();
-        i++;
     }
-
-    public static Telemetry telemetryStatic = null;
 
 }
