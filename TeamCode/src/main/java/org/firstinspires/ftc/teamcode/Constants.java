@@ -13,19 +13,13 @@ public final class Constants {
     public static final float DRIVE_STICK_THRESHOLD_SQUARED = DRIVE_STICK_THRESHOLD * DRIVE_STICK_THRESHOLD;
     public static final float TRIGGER_THRESHOLD = .65f;
 
-    // Servo positions
-    public static final double LS_GRAB = 0.95;
-    public static final double LS_OPEN = 0.65;
-//    public static final double LS_OUT = 0.25;
-    public static final double LS_BACK = 0.1;
+    // Servo Positions
 
-    public static final double RS_GRAB = 0.1;
-    public static final double RS_OPEN = 0.3;
-//    public static final double RS_OUT = 0.7;
-    public static final double RS_BACK = 0.6;
+    public static final double LS_UP = 0.98;
+    public static final double LS_DOWN = .6;
 
-
-
+    public static final double RS_UP = .07;
+    public static final double RS_DOWN = .45;
 
     private Constants() {
     }

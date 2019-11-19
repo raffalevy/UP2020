@@ -7,6 +7,8 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Func;
 
+import static org.firstinspires.ftc.teamcode.Constants.LS_UP;
+
 @Autonomous(name = "RedFAuto", group = "RedAuto")
 public class RedFoundationAuto extends LinearOpMode {
 
@@ -78,6 +80,8 @@ public class RedFoundationAuto extends LinearOpMode {
             }
         });
 
+        rb.leftServo.setPosition(LS_UP);
+        rb.rightServo.setPosition(LS_UP);
 
         telemetry.update();
 

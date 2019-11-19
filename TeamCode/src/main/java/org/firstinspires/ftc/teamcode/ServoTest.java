@@ -54,7 +54,11 @@ public abstract class ServoTest extends OpMode {
         if (gamepad1.left_bumper) {
             if (!leftWasDown) {
                 leftWasDown = true;
-                servoPosition -= INCREMENT;
+                if (gamepad1.b) {
+                    servoPosition -= 0.01;
+                } else {
+                    servoPosition -= INCREMENT;
+                }
             }
         } else {
             leftWasDown = false;
@@ -63,7 +67,11 @@ public abstract class ServoTest extends OpMode {
         if (gamepad1.right_bumper) {
             if (!rightWasDown) {
                 rightWasDown = true;
-                servoPosition += INCREMENT;
+                if (gamepad1.b) {
+                    servoPosition += 0.01;
+                } else {
+                    servoPosition += INCREMENT;
+                }
 
             }
         } else {

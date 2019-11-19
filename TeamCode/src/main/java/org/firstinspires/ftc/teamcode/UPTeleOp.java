@@ -8,12 +8,10 @@ import static org.firstinspires.ftc.teamcode.Constants.DRIVE_POWER;
 import static org.firstinspires.ftc.teamcode.Constants.DRIVE_POWER_SLOW;
 import static org.firstinspires.ftc.teamcode.Constants.DRIVE_STICK_THRESHOLD;
 import static org.firstinspires.ftc.teamcode.Constants.DRIVE_STICK_THRESHOLD_SQUARED;
-import static org.firstinspires.ftc.teamcode.Constants.LS_BACK;
-import static org.firstinspires.ftc.teamcode.Constants.LS_GRAB;
-import static org.firstinspires.ftc.teamcode.Constants.LS_OPEN;
-import static org.firstinspires.ftc.teamcode.Constants.RS_BACK;
-import static org.firstinspires.ftc.teamcode.Constants.RS_GRAB;
-import static org.firstinspires.ftc.teamcode.Constants.RS_OPEN;
+import static org.firstinspires.ftc.teamcode.Constants.LS_UP;
+import static org.firstinspires.ftc.teamcode.Constants.RS_UP;
+import static org.firstinspires.ftc.teamcode.Constants.LS_DOWN;
+import static org.firstinspires.ftc.teamcode.Constants.RS_DOWN;
 import static org.firstinspires.ftc.teamcode.Constants.TRIGGER_THRESHOLD;
 
 @TeleOp(name = "UPTeleOp", group = "TeleOp")
@@ -34,8 +32,8 @@ public class UPTeleOp extends OpMode {
         telemetry.addData("Status", "Initializing");
 
         rb.init(hardwareMap, null);
-        rb.leftServo.setPosition(LS_BACK);
-        rb.rightServo.setPosition(RS_BACK);
+        rb.leftServo.setPosition(LS_UP);
+        rb.rightServo.setPosition(RS_UP);
 
         telemetry.addData("Status", "Initialized");
     }
@@ -88,18 +86,12 @@ public class UPTeleOp extends OpMode {
     }
 
     private void moveGrabbers() {
-        if (gamepad2.left_trigger >= TRIGGER_THRESHOLD) {
-            rb.leftServo.setPosition(LS_BACK);
-            rb.rightServo.setPosition(RS_BACK);
-        } else if (gamepad2.right_trigger >= TRIGGER_THRESHOLD) {
-            rb.leftServo.setPosition(LS_OPEN);
-            rb.rightServo.setPosition(RS_OPEN);
-//        } else if (gamepad2.left_bumper) {
-//            rb.leftServo.setPosition(LS_OUT);
-//            rb.rightServo.setPosition(RS_OUT);
+        if (gamepad2.left_bumper) {
+            rb.leftServo.setPosition(LS_UP);
+            rb.rightServo.setPosition(RS_UP);
         } else if (gamepad2.right_bumper) {
-            rb.leftServo.setPosition(LS_GRAB);
-            rb.rightServo.setPosition(RS_GRAB);
+            rb.leftServo.setPosition(LS_DOWN);
+            rb.rightServo.setPosition(RS_DOWN);
         }
     }
 
