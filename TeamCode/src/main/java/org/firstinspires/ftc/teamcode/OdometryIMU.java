@@ -21,7 +21,7 @@ public class OdometryIMU {
     private double theta = Math.PI / 4;
 
     // The angle at which the robot was facing when the OpMode started
-    private float startingAngle = 0;
+    public float startingAngle = 0;
 
     // The previous encoder values
     private double oldA = 0;
@@ -29,7 +29,7 @@ public class OdometryIMU {
     private double oldC = 0;
 
     // The IMU handler - tracks the robot's orientation
-    private IMU imu = new IMU();
+    public IMU imu = new IMU();
 
     /**
      * Should be called in when the OpMode is initialized

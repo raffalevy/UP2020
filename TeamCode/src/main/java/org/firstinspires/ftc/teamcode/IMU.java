@@ -48,11 +48,11 @@ public class IMU {
     /**
      * Update the robot's orientation
      */
-    public void update() {
+    public synchronized void update() {
         angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS);
     }
 
-    public float getZAngle() {
+    public synchronized float getZAngle() {
         return angles.firstAngle;
     }
 

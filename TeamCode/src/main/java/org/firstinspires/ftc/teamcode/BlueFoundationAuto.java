@@ -7,8 +7,8 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Func;
 
-@Autonomous(name = "RedFAuto", group = "RedAuto")
-public class RedFoundationAuto extends LinearOpMode {
+@Autonomous(name = "BlueAuto", group = "BlueFAuto")
+public class BlueFoundationAuto extends LinearOpMode {
 
     /**
      * Amount of time elapsed
@@ -97,12 +97,31 @@ public class RedFoundationAuto extends LinearOpMode {
         rb.runLeadscrewToPosition(-1250);
 
         // Pull the foundation back to the building site
-        rb.goToX(-30, 0.5, odometry);
+        rb.goToX(40, 0.5, odometry);
+
+        rb.goToTheta(3 * Math.PI / 16, 0.3, odometry, runtime, 4);
+
+        rb.goToX(5, 0.5, odometry);
+
+        rb.goToTheta(3 * Math.PI / 16, 0.3, odometry, runtime, 4);
+
+        rb.goToX(-40, 0.5, odometry);
+
+        rb.goToTheta(3 * Math.PI / 16, 0.3, odometry, runtime, 4);
+
+        rb.goToX(-75, 0.5, odometry);
+
+        rb.goToTheta(3 * Math.PI / 16, 0.3, odometry, runtime, 4);
+
+        rb.goToX(-100, 0.5, odometry);
+
+        rb.goToTheta(3 * Math.PI / 16, 0.2, odometry, runtime, 3);
+
 
         // Let go of the foundation
         rb.runLeadscrewToPosition(-50);
 
         // Drive to the skybridge and park under it
-        rb.goToY(110, 0.4, odometry);
+        rb.goToY(-110, 0.4, odometry);
     }
 }

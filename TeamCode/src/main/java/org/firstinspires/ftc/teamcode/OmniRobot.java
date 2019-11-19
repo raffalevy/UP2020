@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
 /**
@@ -225,19 +226,44 @@ public class OmniRobot {
         return Math.atan2(Math.sin(theta1-theta2), Math.cos(theta1-theta2));
     }
 
-    public static final double THETA_TOLERANCE = 0.17;
+    public static final double THETA_TOLERANCE = 0.04;
 
-    void goClockwiseToTheta(double targetTheta, double power, OdometryIMU odometry) {
+//    void goClockwiseToTheta(double targetTheta, double power, OdometryIMU odometry) {
+//        updateOdometry(odometry);
+//        if (angleDiff(targetTheta, odometry.getTheta()) > THETA_TOLERANCE) {
+//            turnClockwise(power);
+//            while (opMode.opModeIsActive() && angleDiff(targetTheta, odometry.getTheta()) > THETA_TOLERANCE) {
+//                updateOdometry(odometry);
+//                Thread.yield();
+//                opMode.telemetry.update();
+//            }
+//            driveStop();
+//        }
+//        updateOdometry(odometry);
+//    }
+
+    void goToTheta(double targetTheta, double power, OdometryIMU odometry, ElapsedTime runtime, double timeout) {
         updateOdometry(odometry);
-        if (angleDiff(targetTheta, odometry.getTheta()) > THETA_TOLERANCE) {
+        if (angleDiff(odometry.getTheta(), targetTheta) > THETA_TOLERANCE) {
             turnClockwise(power);
-            while (opMode.opModeIsActive() && angleDiff(targetTheta, odometry.getTheta()) > THETA_TOLERANCE) {
+            double startTime = runtime.seconds();
+            while (opMode.opModeIsActive() && runtime.seconds() - startTime < timeout && angleDiff(odometry.getTheta(), targetTheta) > THETA_TOLERANCE) {
                 updateOdometry(odometry);
                 Thread.yield();
                 opMode.telemetry.update();
             }
             driveStop();
+            updateOdometry(odometry);
+        } else if (angleDiff(odometry.getTheta(), targetTheta) < -THETA_TOLERANCE) {
+            turnClockwise(-power);
+            double startTime = runtime.seconds();
+            while (opMode.opModeIsActive() && runtime.seconds() - startTime < timeout && angleDiff(odometry.getTheta(), targetTheta) < -THETA_TOLERANCE) {
+                updateOdometry(odometry);
+                Thread.yield();
+                opMode.telemetry.update();
+            }
+            driveStop();
+            updateOdometry(odometry);
         }
-        updateOdometry(odometry);
     }
 }

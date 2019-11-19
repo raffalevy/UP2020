@@ -4,7 +4,17 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import static org.firstinspires.ftc.teamcode.Constants.*;
+import static org.firstinspires.ftc.teamcode.Constants.DRIVE_POWER;
+import static org.firstinspires.ftc.teamcode.Constants.DRIVE_POWER_SLOW;
+import static org.firstinspires.ftc.teamcode.Constants.DRIVE_STICK_THRESHOLD;
+import static org.firstinspires.ftc.teamcode.Constants.DRIVE_STICK_THRESHOLD_SQUARED;
+import static org.firstinspires.ftc.teamcode.Constants.LS_BACK;
+import static org.firstinspires.ftc.teamcode.Constants.LS_GRAB;
+import static org.firstinspires.ftc.teamcode.Constants.LS_OPEN;
+import static org.firstinspires.ftc.teamcode.Constants.RS_BACK;
+import static org.firstinspires.ftc.teamcode.Constants.RS_GRAB;
+import static org.firstinspires.ftc.teamcode.Constants.RS_OPEN;
+import static org.firstinspires.ftc.teamcode.Constants.TRIGGER_THRESHOLD;
 
 @TeleOp(name = "UPTeleOp", group = "TeleOp")
 public class UPTeleOp extends OpMode {
@@ -84,9 +94,9 @@ public class UPTeleOp extends OpMode {
         } else if (gamepad2.right_trigger >= TRIGGER_THRESHOLD) {
             rb.leftServo.setPosition(LS_OPEN);
             rb.rightServo.setPosition(RS_OPEN);
-        } else if (gamepad2.left_bumper) {
-            rb.leftServo.setPosition(LS_OUT);
-            rb.rightServo.setPosition(RS_OUT);
+//        } else if (gamepad2.left_bumper) {
+//            rb.leftServo.setPosition(LS_OUT);
+//            rb.rightServo.setPosition(RS_OUT);
         } else if (gamepad2.right_bumper) {
             rb.leftServo.setPosition(LS_GRAB);
             rb.rightServo.setPosition(RS_GRAB);
