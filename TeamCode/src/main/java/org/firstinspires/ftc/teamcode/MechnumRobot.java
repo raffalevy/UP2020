@@ -39,18 +39,26 @@ public class MechnumRobot {
     }
 
     void drive(double x_stick, double y_stick, double x_right_stick, double multiplier) {
-        if (x_stick > 2 * y_stick) {
-            flMotor.setPower(x_stick * multiplier);
-            frMotor.setPower(-x_stick * multiplier);
-            blMotor.setPower(-x_stick * multiplier);
-            brMotor.setPower(x_stick * multiplier);
+        if (Math.abs(x_stick) + Math.abs(y_stick) > Math.abs(x_right_stick)) {
+            if (x_stick > 2 * y_stick) {
+                flMotor.setPower(x_stick * multiplier);
+                frMotor.setPower(-x_stick * multiplier);
+                blMotor.setPower(-x_stick * multiplier);
+                brMotor.setPower(x_stick * multiplier);
+            } else {
+                flMotor.setPower(y_stick * multiplier);
+                frMotor.setPower(y_stick * multiplier);
+                blMotor.setPower(y_stick * multiplier);
+                brMotor.setPower(y_stick * multiplier);
+            }
         } else {
-            flMotor.setPower(y_stick * multiplier);
-            frMotor.setPower(y_stick * multiplier);
-            blMotor.setPower(y_stick * multiplier);
-            brMotor.setPower(y_stick * multiplier);
+            flMotor.setPower(x_right_stick * multiplier);
+            frMotor.setPower(-x_right_stick * multiplier);
+            blMotor.setPower(x_right_stick * multiplier);
+            brMotor.setPower(-x_right_stick * multiplier);
         }
     }
+
     /**
      * Stop the drive motors
      */
@@ -59,5 +67,30 @@ public class MechnumRobot {
         frMotor.setPower(0);
         blMotor.setPower(0);
         brMotor.setPower(0);
+    }
+
+    void updateOdometry(OdometryIMU odometry) {
+        odometry.update(frMotor.getCurrentPosition(), flMotor.getCurrentPosition(), blMotor.getCurrentPosition());
+    }
+
+    void driveForward(double power) {
+        flMotor.setPower(power);
+        blMotor.setPower(power);
+        frMotor.setPower(power);
+        brMotor.setPower(power);
+    }
+
+    void strafeRight(double power) {
+        flMotor.setPower(power);
+        blMotor.setPower(-power);
+        frMotor.setPower(-power);
+        brMotor.setPower(power);
+    }
+
+    void turnClockwise(double power) {
+        flMotor.setPower(power);
+        blMotor.setPower(power);
+        frMotor.setPower(-power);
+        brMotor.setPower(-power);
     }
 }
