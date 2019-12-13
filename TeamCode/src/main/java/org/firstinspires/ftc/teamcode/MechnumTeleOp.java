@@ -14,16 +14,15 @@ import static org.firstinspires.ftc.teamcode.Constants.LS_DOWN;
 import static org.firstinspires.ftc.teamcode.Constants.RS_DOWN;
 import static org.firstinspires.ftc.teamcode.Constants.TRIGGER_THRESHOLD;
 
-@TeleOp(name = "UPTeleOp", group = "TeleOp")
-    public class UPTeleOp extends OpMode {
+@TeleOp(name = "MechnumTeleOp", group = "TeleOp")
+public class MechnumTeleOp extends OpMode {
 
     /**
      * Amount of time elapsed
      */
     private ElapsedTime runtime = new ElapsedTime();
 
-    private OmniRobot rb = new OmniRobot();
-
+    private MechnumRobot rb = new MechnumRobot();
     /**
      * This method will be called once when the INIT button is pressed.
      */
@@ -32,12 +31,9 @@ import static org.firstinspires.ftc.teamcode.Constants.TRIGGER_THRESHOLD;
         telemetry.addData("Status", "Initializing");
 
         rb.init(hardwareMap, null);
-        rb.leftServo.setPosition(LS_UP);
-        rb.rightServo.setPosition(RS_UP);
 
         telemetry.addData("Status", "Initialized");
     }
-
     /**
      * This method will be called once when the PLAY button is first pressed.
      */
@@ -46,7 +42,6 @@ import static org.firstinspires.ftc.teamcode.Constants.TRIGGER_THRESHOLD;
         // Reset elapsed time
         runtime.reset();
     }
-
     /**
      * This method will be called repeatedly in a loop while this op mode is running
      */
@@ -55,11 +50,6 @@ import static org.firstinspires.ftc.teamcode.Constants.TRIGGER_THRESHOLD;
         telemetry.addData("Status", "Looping");
 
         driveChassis();
-
-        moveGrabbers();
-
-        moveLift();
-        moveLeadscrew();
     }
 
     /**
@@ -83,30 +73,5 @@ import static org.firstinspires.ftc.teamcode.Constants.TRIGGER_THRESHOLD;
             rb.driveStop();
         }
     }
-
-    private void moveGrabbers() {
-        if (gamepad2.left_bumper) {
-            rb.leftServo.setPosition(LS_UP);
-            rb.rightServo.setPosition(RS_UP);
-        } else if (gamepad2.right_bumper) {
-            rb.leftServo.setPosition(LS_DOWN);
-            rb.rightServo.setPosition(RS_DOWN);
-        }
-    }
-
-    private void moveLift() {
-        if (Math.abs(gamepad2.left_stick_y) >= 0.5) {
-            rb.liftMotor.setPower(gamepad2.left_stick_y / 2);
-        } else {
-            rb.liftMotor.setPower(0);
-        }
-    }
-
-    private void moveLeadscrew() {
-        if (Math.abs(gamepad2.right_stick_y) >= 0.5) {
-            rb.leadscrewMotor.setPower(gamepad2.right_stick_y / 2);
-        } else {
-            rb.leadscrewMotor.setPower(0);
-        }
-    }
 }
+
