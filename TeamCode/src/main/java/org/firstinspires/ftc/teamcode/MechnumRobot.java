@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 public class MechnumRobot {
     // --------------------------------------
@@ -40,7 +41,7 @@ public class MechnumRobot {
 
     void drive(double x_stick, double y_stick, double x_right_stick, double multiplier) {
         if (Math.abs(x_stick) + Math.abs(y_stick) > Math.abs(x_right_stick)) {
-            if (x_stick > 2 * y_stick) {
+            if (Math.abs(x_stick) > (2 * Math.abs(y_stick))) {
                 flMotor.setPower(x_stick * multiplier);
                 frMotor.setPower(-x_stick * multiplier);
                 blMotor.setPower(-x_stick * multiplier);
@@ -93,4 +94,95 @@ public class MechnumRobot {
         frMotor.setPower(-power);
         brMotor.setPower(-power);
     }
+    void goToXY(double targetX, double targetY, double power, OdometryIMU odemetry){
+        double deltaX = odemetry.getX() - targetX;
+        double deltaY = odemetry.getY() - targetY;
+        double theta = Math.atan2(deltaX, deltaY);
+        goToTheta(theta,.3, odemetry, new ElapsedTime(), 1 + Math.atan2(deltaX, deltaY));
+        while (opMode.opModeIsActive() && Math.abs(odemetry.getX()-targetX)>.5 && Math.abs(odemetry.getY()-targetY)>.5){
+            updateOdometry(odemetry);
+            driveForward(power);
+            opMode.telemetry.update();
+        }
+        driveStop();
+        updateOdometry(odemetry);
+    }
+
+    public static double angleDiff(double theta1, double theta2) {
+        return Math.atan2(Math.sin(theta1-theta2), Math.cos(theta1-theta2));
+    }
+
+    void goToTheta(double targetTheta, double power, OdometryIMU odometry, ElapsedTime runtime, double timeout) {
+        updateOdometry(odometry);
+        if (angleDiff(odometry.getTheta(), targetTheta) > THETA_TOLERANCE) {
+            turnClockwise(power);
+            double startTime = runtime.seconds();
+            while (opMode.opModeIsActive() && runtime.seconds() - startTime < timeout && angleDiff(odometry.getTheta(), targetTheta) > THETA_TOLERANCE) {
+                updateOdometry(odometry);
+                Thread.yield();
+                opMode.telemetry.update();
+            }
+            driveStop();
+            updateOdometry(odometry);
+        } else if (angleDiff(odometry.getTheta(), targetTheta) < -THETA_TOLERANCE) {
+            turnClockwise(-power);
+            double startTime = runtime.seconds();
+            while (opMode.opModeIsActive() && runtime.seconds() - startTime < timeout && angleDiff(odometry.getTheta(), targetTheta) < -THETA_TOLERANCE) {
+                updateOdometry(odometry);
+                Thread.yield();
+                opMode.telemetry.update();
+        }
+            driveStop();
+            updateOdometry(odometry);
+        }
+    }
+
+
+    public static final double THETA_TOLERANCE = 0.04;
+
+    void goToX(double targetX, double power, OdometryIMU odometry) {
+        updateOdometry(odometry);
+        if (odometry.getX() < targetX) {
+            driveForward(power);
+            while (opMode.opModeIsActive() && odometry.getX() < targetX) {
+                updateOdometry(odometry);
+                Thread.yield();
+                opMode.telemetry.update();
+            }
+            driveStop();
+            updateOdometry(odometry);
+        } else if (odometry.getX() > targetX) {
+            driveForward(power);
+            while (opMode.opModeIsActive() && odometry.getX() > targetX) {
+                updateOdometry(odometry);
+                Thread.yield();
+                opMode.telemetry.update();
+            }
+            driveStop();
+            updateOdometry(odometry);
+        }
+    }
+    void goToY(double targetY, double power, OdometryIMU odometry) {
+        updateOdometry(odometry);
+        if (odometry.getY() < targetY) {
+            driveForward(power);
+            while (opMode.opModeIsActive() && odometry.getY() < targetY) {
+                updateOdometry(odometry);
+                Thread.yield();
+                opMode.telemetry.update();
+            }
+            driveStop();
+            updateOdometry(odometry);
+        } else if (odometry.getY() > targetY) {
+            driveForward(-power);
+            while (opMode.opModeIsActive() && odometry.getY() > targetY) {
+                updateOdometry(odometry);
+                Thread.yield();
+                opMode.telemetry.update();
+            }
+            driveStop();
+            updateOdometry(odometry);
+        }
+    }
+
 }
