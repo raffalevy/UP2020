@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -27,7 +28,7 @@ public class MechnumRobot {
 
         // Set motor directions
         flMotor.setDirection(DcMotor.Direction.FORWARD);
-        frMotor.setDirection(DcMotor.Direction.FORWARD);
+        frMotor.setDirection(DcMotor.Direction.REVERSE);
         blMotor.setDirection(DcMotor.Direction.FORWARD);
         brMotor.setDirection(DcMotor.Direction.FORWARD);
 
@@ -40,24 +41,17 @@ public class MechnumRobot {
     }
 
     void drive(double x_stick, double y_stick, double x_right_stick, double multiplier) {
-        if (Math.abs(x_stick) + Math.abs(y_stick) > Math.abs(x_right_stick)) {
             if (Math.abs(x_stick) > (2 * Math.abs(y_stick))) {
                 flMotor.setPower(x_stick * multiplier);
                 frMotor.setPower(-x_stick * multiplier);
                 blMotor.setPower(-x_stick * multiplier);
                 brMotor.setPower(x_stick * multiplier);
             } else {
-                flMotor.setPower(y_stick * multiplier);
-                frMotor.setPower(y_stick * multiplier);
-                blMotor.setPower(y_stick * multiplier);
-                brMotor.setPower(y_stick * multiplier);
+                flMotor.setPower((y_stick + x_right_stick) * multiplier);
+                frMotor.setPower((y_stick - x_right_stick) * multiplier);
+                blMotor.setPower((y_stick + x_right_stick) * multiplier);
+                brMotor.setPower((y_stick - x_right_stick) * multiplier);
             }
-        } else {
-            flMotor.setPower(x_right_stick * multiplier);
-            frMotor.setPower(-x_right_stick * multiplier);
-            blMotor.setPower(x_right_stick * multiplier);
-            brMotor.setPower(-x_right_stick * multiplier);
-        }
     }
 
     /**
