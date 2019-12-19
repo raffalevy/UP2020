@@ -92,6 +92,9 @@ public class UPTeleOp extends OpMode {
         } else if (gamepad2.right_bumper) {
             rb.leftServo.setPosition(LS_DOWN);
             rb.rightServo.setPosition(RS_DOWN);
+        } else if (gamepad2.right_trigger >= 0.5) {
+            rb.leftServo.setPosition(0.55);
+            rb.rightServo.setPosition(0.5);
         }
     }
 
