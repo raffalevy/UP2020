@@ -6,7 +6,12 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-public class MechnumRobot {
+/**
+ * Code for driving the new Mecanum robot
+ *
+ * December 2019
+ */
+public class MecanumRobot {
     // --------------------------------------
     // Declare motors
 
@@ -40,6 +45,9 @@ public class MechnumRobot {
 
     }
 
+    /**
+     * Decide whether to turn or strafe depending on the angle of the joysticks
+     */
     void drive(double x_stick, double y_stick, double x_right_stick, double multiplier) {
             if (Math.abs(x_stick) > (2 * Math.abs(y_stick))) {
                 flMotor.setPower(x_stick * multiplier);
