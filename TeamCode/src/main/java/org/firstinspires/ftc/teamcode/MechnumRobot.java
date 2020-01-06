@@ -88,12 +88,14 @@ public class MechnumRobot {
         frMotor.setPower(-power);
         brMotor.setPower(-power);
     }
+    public static double XY_TOLERANCE = .5;
+
     void goToXY(double targetX, double targetY, double power, OdometryIMU odemetry){
         double deltaX = odemetry.getX() - targetX;
         double deltaY = odemetry.getY() - targetY;
         double theta = Math.atan2(deltaX, deltaY);
         goToTheta(theta,.3, odemetry, new ElapsedTime(), 1 + Math.atan2(deltaX, deltaY));
-        while (opMode.opModeIsActive() && Math.abs(odemetry.getX()-targetX)>.5 && Math.abs(odemetry.getY()-targetY)>.5){
+        while (opMode.opModeIsActive() && Math.abs(odemetry.getX()-targetX)>XY_TOLERANCE && Math.abs(odemetry.getY()-targetY)>XY_TOLERANCE){
             updateOdometry(odemetry);
             driveForward(power);
             opMode.telemetry.update();
