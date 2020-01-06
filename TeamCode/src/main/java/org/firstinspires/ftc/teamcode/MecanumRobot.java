@@ -102,8 +102,8 @@ public class MecanumRobot {
         double deltaX = odemetry.getX() - targetX;
         double deltaY = odemetry.getY() - targetY;
         double theta = Math.atan2(deltaX, deltaY);
-        goToTheta(theta,.3, odemetry, new ElapsedTime(), 1 + Math.atan2(deltaX, deltaY));
-        while (opMode.opModeIsActive() && Math.abs(odemetry.getX()-targetX)>XY_TOLERANCE && Math.abs(odemetry.getY()-targetY)>XY_TOLERANCE){
+        goToTheta(theta,.3, odemetry, new ElapsedTime(), 1 + (deltaX + deltaY/5));
+        while (opMode.opModeIsActive() && Math.abs(deltaX)> XY_TOLERANCE && Math.abs(deltaY)> XY_TOLERANCE){
             updateOdometry(odemetry);
             driveForward(power);
             opMode.telemetry.update();
