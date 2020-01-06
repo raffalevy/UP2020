@@ -8,21 +8,22 @@ import static org.firstinspires.ftc.teamcode.Constants.DRIVE_POWER;
 import static org.firstinspires.ftc.teamcode.Constants.DRIVE_POWER_SLOW;
 import static org.firstinspires.ftc.teamcode.Constants.DRIVE_STICK_THRESHOLD;
 import static org.firstinspires.ftc.teamcode.Constants.DRIVE_STICK_THRESHOLD_SQUARED;
-import static org.firstinspires.ftc.teamcode.Constants.LS_UP;
-import static org.firstinspires.ftc.teamcode.Constants.RS_UP;
-import static org.firstinspires.ftc.teamcode.Constants.LS_DOWN;
-import static org.firstinspires.ftc.teamcode.Constants.RS_DOWN;
 import static org.firstinspires.ftc.teamcode.Constants.TRIGGER_THRESHOLD;
 
-@TeleOp(name = "MechnumTeleOp", group = "TeleOp")
-public class MechnumTeleOp extends OpMode {
+/**
+ * TeleOp for the new Mecanum robot
+ *
+ * December 2019
+ */
+@TeleOp(name = "MecanumTeleOp", group = "TeleOp")
+public class MecanumTeleOp extends OpMode {
 
     /**
      * Amount of time elapsed
      */
     private ElapsedTime runtime = new ElapsedTime();
 
-    private MechnumRobot rb = new MechnumRobot();
+    private MecanumRobot rb = new MecanumRobot();
     /**
      * This method will be called once when the INIT button is pressed.
      */
