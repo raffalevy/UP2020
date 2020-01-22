@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 /**
@@ -19,6 +20,10 @@ public class MecanumRobot {
     DcMotor frMotor = null;
     DcMotor blMotor = null;
     DcMotor brMotor = null;
+    DcMotor liftMotor = null;
+
+    Servo leftServo = null;
+    Servo rightServo = null;
 
     LinearOpMode opMode;
 
@@ -30,6 +35,12 @@ public class MecanumRobot {
         frMotor = hardwareMap.get(DcMotor.class, "FR");
         blMotor = hardwareMap.get(DcMotor.class, "BL");
         brMotor = hardwareMap.get(DcMotor.class, "BR");
+
+        liftMotor = hardwareMap.get(DcMotor.class, "LIFT");
+
+        // Initialize servos
+        leftServo = hardwareMap.get(Servo.class, "LS");
+        rightServo = hardwareMap.get(Servo.class, "RS");
 
         // Set motor directions
         flMotor.setDirection(DcMotor.Direction.FORWARD);
