@@ -47,12 +47,14 @@ public class MecanumRobot {
         frMotor.setDirection(DcMotor.Direction.REVERSE);
         blMotor.setDirection(DcMotor.Direction.FORWARD);
         brMotor.setDirection(DcMotor.Direction.FORWARD);
+        liftMotor.setDirection(DcMotor.Direction.FORWARD);
 
         // Set all motors to brake when power is zero
         flMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         frMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         blMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         brMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        liftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
     }
 

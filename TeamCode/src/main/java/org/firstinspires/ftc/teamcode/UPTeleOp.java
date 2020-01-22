@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -15,6 +16,7 @@ import static org.firstinspires.ftc.teamcode.Constants.RS_DOWN;
 import static org.firstinspires.ftc.teamcode.Constants.TRIGGER_THRESHOLD;
 
 @TeleOp(name = "UPTeleOp", group = "TeleOp")
+@Disabled
     public class UPTeleOp extends OpMode {
 
     /**
