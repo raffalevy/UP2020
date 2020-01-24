@@ -25,6 +25,8 @@ public class MecanumRobot {
     Servo leftServo = null;
     Servo rightServo = null;
 
+    Servo hookServo = null;
+
     LinearOpMode opMode;
 
     void init(HardwareMap hardwareMap, LinearOpMode opMode) {
@@ -41,6 +43,7 @@ public class MecanumRobot {
         // Initialize servos
         leftServo = hardwareMap.get(Servo.class, "LS");
         rightServo = hardwareMap.get(Servo.class, "RS");
+        hookServo = hardwareMap.get(Servo.class, "HOOK");
 
         // Set motor directions
         flMotor.setDirection(DcMotor.Direction.FORWARD);
