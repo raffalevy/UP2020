@@ -14,8 +14,8 @@ import static org.firstinspires.ftc.teamcode.Constants.flConstant3;
 import static org.firstinspires.ftc.teamcode.Constants.frConstant1;
 import static org.firstinspires.ftc.teamcode.Constants.frConstant2;
 
-@Autonomous(name = "MBlueFAuto", group = "BlueAuto")
-public class MecanumBlueAuto extends LinearOpMode {
+@Autonomous(name = "MRedFAuto", group = "RedAuto")
+public class MecanumRedAuto extends LinearOpMode {
 
     MecanumRobot rb = new MecanumRobot();
     /**
@@ -72,9 +72,9 @@ public class MecanumBlueAuto extends LinearOpMode {
         rb.hookServo.setPosition(HOOK_UP);
 
         // Drive to the skybridge and park under it
-        while (rb.flMotor.getCurrentPosition() < flConstant3 && rb.blMotor.getCurrentPosition() > blConstant1) {
-                rb.strafeRight(-.5);
-            }
-
+        while (rb.flMotor.getCurrentPosition() > flConstant3 && rb.blMotor.getCurrentPosition() < blConstant1) {
+            rb.strafeRight(5);
         }
+
     }
+}
