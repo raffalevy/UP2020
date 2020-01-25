@@ -15,13 +15,13 @@ public final class Constants {
 
     // Servo Positions
 
-    public static final double LS_UP = 0.4;
+    public static final double LS_UP = 0.7;
     public static final double LS_DOWN = .05;
 
-    public static final double RS_UP = .75;
-    public static final double RS_DOWN = .1;
+    public static final double RS_UP = .35;
+    public static final double RS_DOWN = 1.0;
 
-    public static final double HOOK_UP = .5;
+    public static final double HOOK_UP = .62;
     public static final double HOOK_DOWN = .1;
 
     //Encoder Constants
