@@ -48,6 +48,10 @@ public class MecanumTeleOp extends OpMode {
     public void start() {
         // Reset elapsed time
         runtime.reset();
+        rb.resetEncoder(rb.frMotor);
+        rb.resetEncoder(rb.flMotor);
+        rb.resetEncoder(rb.blMotor);
+        rb.resetEncoder(rb.brMotor);
     }
     /**
      * This method will be called repeatedly in a loop while this op mode is running
@@ -63,6 +67,12 @@ public class MecanumTeleOp extends OpMode {
         moveLift();
 
         moveHook();
+
+        telemetry.addData("frEncoder", rb.frMotor.getCurrentPosition());
+        telemetry.addData("flEncoder", rb.flMotor.getCurrentPosition());
+        telemetry.addData("blEncoder", rb.blMotor.getCurrentPosition());
+        telemetry.update();
+
     }
 
     private void moveGrabbers() {

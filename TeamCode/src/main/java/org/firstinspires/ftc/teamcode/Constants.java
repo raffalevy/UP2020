@@ -15,8 +15,8 @@ public final class Constants {
 
     // Servo Positions
 
-    public static final double LS_UP = 0.7;
-    public static final double LS_DOWN = .05;
+    public static final double LS_UP = 0.45;
+    public static final double LS_DOWN = -.01;
 
     public static final double RS_UP = .35;
     public static final double RS_DOWN = 1.0;

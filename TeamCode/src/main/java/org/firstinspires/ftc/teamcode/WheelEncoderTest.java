@@ -13,7 +13,7 @@ public class WheelEncoderTest extends OpMode {
      */
     private ElapsedTime runtime = new ElapsedTime();
 
-    OmniRobot rb = new OmniRobot();
+    MecanumRobot rb = new MecanumRobot();
 
     /**
      * This method will be called once when the INIT button is pressed.

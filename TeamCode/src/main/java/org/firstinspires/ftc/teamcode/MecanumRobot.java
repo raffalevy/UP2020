@@ -65,7 +65,7 @@ public class MecanumRobot {
      * Decide whether to turn or strafe depending on the angle of the joysticks
      */
     void drive(double x_stick, double y_stick, double x_right_stick, double multiplier) {
-            if (Math.abs(x_stick) > (2 * Math.abs(y_stick))) {
+            if (Math.abs(x_stick) >= (2 * Math.abs(y_stick)) + .1) {
                 flMotor.setPower(x_stick * multiplier);
                 frMotor.setPower(-x_stick * multiplier);
                 blMotor.setPower(-x_stick * multiplier);
@@ -203,6 +203,10 @@ public class MecanumRobot {
             driveStop();
             updateOdometry(odometry);
         }
+    }
+     void resetEncoder(DcMotor motor) {
+        motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 
 }
