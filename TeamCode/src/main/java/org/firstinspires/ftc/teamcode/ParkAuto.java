@@ -7,7 +7,9 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Func;
 
+import static org.firstinspires.ftc.teamcode.Constants.LS_DOWN;
 import static org.firstinspires.ftc.teamcode.Constants.LS_UP;
+import static org.firstinspires.ftc.teamcode.Constants.RS_DOWN;
 import static org.firstinspires.ftc.teamcode.Constants.RS_UP;
 
 @Autonomous(name = "ParkAuto", group = "ParkAuto")
@@ -80,9 +82,6 @@ public class ParkAuto extends LinearOpMode {
                     return odometry.imu.getZAngle();
                 }
             });
-
-            rb.leftServo.setPosition(LS_UP);
-            rb.rightServo.setPosition(RS_UP);
 
             telemetry.update();
 
