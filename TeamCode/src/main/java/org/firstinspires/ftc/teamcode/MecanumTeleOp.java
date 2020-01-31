@@ -8,8 +8,8 @@ import static org.firstinspires.ftc.teamcode.Constants.DRIVE_POWER;
 import static org.firstinspires.ftc.teamcode.Constants.DRIVE_POWER_SLOW;
 import static org.firstinspires.ftc.teamcode.Constants.DRIVE_STICK_THRESHOLD;
 import static org.firstinspires.ftc.teamcode.Constants.DRIVE_STICK_THRESHOLD_SQUARED;
-import static org.firstinspires.ftc.teamcode.Constants.HOOK_DOWN;
-import static org.firstinspires.ftc.teamcode.Constants.HOOK_UP;
+import static org.firstinspires.ftc.teamcode.Constants.HOOK1_DOWN;
+import static org.firstinspires.ftc.teamcode.Constants.HOOK1_UP;
 import static org.firstinspires.ftc.teamcode.Constants.LS_DOWN;
 import static org.firstinspires.ftc.teamcode.Constants.LS_UP;
 import static org.firstinspires.ftc.teamcode.Constants.RS_DOWN;
@@ -98,9 +98,9 @@ public class MecanumTeleOp extends OpMode {
         }
 
         if (hookDown) {
-            rb.hookServo.setPosition(HOOK_DOWN);
+            rb.hookServo1.setPosition(HOOK1_DOWN);
         } else {
-            rb.hookServo.setPosition(HOOK_UP);
+            rb.hookServo1.setPosition(HOOK1_UP);
         }
     }
 

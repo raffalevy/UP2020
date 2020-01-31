@@ -21,8 +21,11 @@ public final class Constants {
     public static final double RS_UP = .35;
     public static final double RS_DOWN = 1.0;
 
-    public static final double HOOK_UP = .62;
-    public static final double HOOK_DOWN = .1;
+    public static final double HOOK1_UP = .62;
+    public static final double HOOK1_DOWN = .1;
+
+    public static final double HOOK2_UP = .62;
+    public static final double HOOK2_DOWN = .1;
 
     //Encoder Constants
 

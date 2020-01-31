@@ -7,6 +7,6 @@ import com.qualcomm.robotcore.hardware.Servo;
 public class HookServoTest extends MecanumServoTest {
     @Override
     public Servo getTestServo() {
-        return rb.hookServo;
+        return rb.hookServo1;
     }
 }

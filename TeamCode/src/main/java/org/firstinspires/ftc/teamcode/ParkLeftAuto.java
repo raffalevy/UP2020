@@ -7,10 +7,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Func;
 
-import static org.firstinspires.ftc.teamcode.Constants.LS_DOWN;
-import static org.firstinspires.ftc.teamcode.Constants.LS_UP;
-import static org.firstinspires.ftc.teamcode.Constants.RS_DOWN;
-import static org.firstinspires.ftc.teamcode.Constants.RS_UP;
+
 
 @Autonomous(name = "ParkLeft", group = "ParkAuto")
 public class ParkLeftAuto extends LinearOpMode {

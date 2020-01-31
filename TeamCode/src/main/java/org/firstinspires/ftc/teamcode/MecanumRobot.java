@@ -2,10 +2,10 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import static org.firstinspires.ftc.teamcode.Constants.*;
 
 /**
  * Code for driving the new Mecanum robot
@@ -25,7 +25,8 @@ public class MecanumRobot {
     Servo leftServo = null;
     Servo rightServo = null;
 
-    Servo hookServo = null;
+    Servo hookServo1 = null;
+    Servo hookServo2 = null;
 
     LinearOpMode opMode;
 
@@ -43,7 +44,8 @@ public class MecanumRobot {
         // Initialize servos
         leftServo = hardwareMap.get(Servo.class, "LS");
         rightServo = hardwareMap.get(Servo.class, "RS");
-        hookServo = hardwareMap.get(Servo.class, "HOOK");
+        hookServo1 = hardwareMap.get(Servo.class, "HOOK1");
+        hookServo2 = hardwareMap.get(Servo.class, "HOOK2");
 
         // Set motor directions
         flMotor.setDirection(DcMotor.Direction.FORWARD);
@@ -207,6 +209,14 @@ public class MecanumRobot {
      void resetEncoder(DcMotor motor) {
         motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+    }
+    void hooksDown() {
+        hookServo1.setPosition(HOOK1_DOWN);
+        hookServo2.setPosition(HOOK2_DOWN);
+    }
+    void hooksUp() {
+        hookServo1.setPosition(HOOK1_UP);
+        hookServo2.setPosition(HOOK2_UP);
     }
 
 }

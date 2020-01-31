@@ -5,8 +5,8 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import static org.firstinspires.ftc.teamcode.Constants.HOOK_DOWN;
-import static org.firstinspires.ftc.teamcode.Constants.HOOK_UP;
+import static org.firstinspires.ftc.teamcode.Constants.HOOK1_DOWN;
+import static org.firstinspires.ftc.teamcode.Constants.HOOK1_UP;
 import static org.firstinspires.ftc.teamcode.Constants.blConstant1;
 import static org.firstinspires.ftc.teamcode.Constants.flConstant1;
 import static org.firstinspires.ftc.teamcode.Constants.flConstant2;
@@ -61,7 +61,7 @@ public class MecanumBlueAuto extends LinearOpMode {
         }
 
         // Use the hook to grab the foundation
-        rb.hookServo.setPosition(HOOK_DOWN);
+        rb.hookServo1.setPosition(HOOK1_DOWN);
 
         // Pull the foundation back to the building site
         while (rb.flMotor.getCurrentPosition() > flConstant2 && rb.frMotor.getCurrentPosition() > frConstant2) {
@@ -69,7 +69,7 @@ public class MecanumBlueAuto extends LinearOpMode {
         }
 
         // Let go of the foundation
-        rb.hookServo.setPosition(HOOK_UP);
+        rb.hookServo1.setPosition(HOOK1_UP);
 
         // Drive to the skybridge and park under it
         while (rb.flMotor.getCurrentPosition() < flConstant3 && rb.blMotor.getCurrentPosition() > blConstant1) {
