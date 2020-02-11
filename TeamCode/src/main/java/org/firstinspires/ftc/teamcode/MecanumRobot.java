@@ -55,10 +55,10 @@ public class MecanumRobot {
         hookServo2 = hardwareMap.get(Servo.class, "HOOK2");
 
         // Set motor directions
-        flMotor.setDirection(DcMotor.Direction.FORWARD);
-        frMotor.setDirection(DcMotor.Direction.REVERSE);
-        blMotor.setDirection(DcMotor.Direction.FORWARD);
-        brMotor.setDirection(DcMotor.Direction.REVERSE);
+        flMotor.setDirection(DcMotor.Direction.REVERSE);
+        frMotor.setDirection(DcMotor.Direction.FORWARD);
+        blMotor.setDirection(DcMotor.Direction.REVERSE);
+        brMotor.setDirection(DcMotor.Direction.FORWARD);
         liftMotor.setDirection(DcMotor.Direction.FORWARD);
 
         // Set all motors to brake when power is zero

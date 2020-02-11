@@ -1,7 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 /**
- * Constants for omni robot
+ * Constants for robot
  */
 public final class Constants {
 
@@ -15,17 +15,17 @@ public final class Constants {
 
     // Servo Positions
 
-    public static final double LS_UP = 0.45;
-    public static final double LS_DOWN = -.05;
+    public static final double LS_UP = 0.6;
+    public static final double LS_DOWN = .32;
 
-    public static final double RS_UP = .35;
-    public static final double RS_DOWN = 1.0;
+    public static final double RS_UP = .72;
+    public static final double RS_DOWN = .95;
 
-    public static final double HOOK1_UP = .62;
-    public static final double HOOK1_DOWN = .1;
+    public static final double HOOK1_UP = .63;
+    public static final double HOOK1_DOWN = .18;
 
-    public static final double HOOK2_UP = .62;
-    public static final double HOOK2_DOWN = .1;
+    public static final double HOOK2_UP = .0;
+    public static final double HOOK2_DOWN = .8;
 
     //Encoder Constants
 
