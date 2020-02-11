@@ -103,8 +103,10 @@ public class MecanumTeleOp extends OpMode {
     }
 
     private void moveLift() {
-        if (Math.abs(gamepad2.left_stick_y) >= 0.5) {
+        if (gamepad2.left_stick_y >= 0.5) {
             rb.liftMotor.setPower(gamepad2.left_stick_y / 2);
+        } else if (gamepad2.left_stick_y <= 0.5) {
+            rb.liftMotor.setPower(gamepad2.left_stick_y / 4);
         } else {
             rb.liftMotor.setPower(0);
         }
