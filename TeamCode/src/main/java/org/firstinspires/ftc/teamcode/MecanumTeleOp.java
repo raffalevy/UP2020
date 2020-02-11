@@ -8,8 +8,6 @@ import static org.firstinspires.ftc.teamcode.Constants.DRIVE_POWER;
 import static org.firstinspires.ftc.teamcode.Constants.DRIVE_POWER_SLOW;
 import static org.firstinspires.ftc.teamcode.Constants.DRIVE_STICK_THRESHOLD;
 import static org.firstinspires.ftc.teamcode.Constants.DRIVE_STICK_THRESHOLD_SQUARED;
-import static org.firstinspires.ftc.teamcode.Constants.HOOK1_DOWN;
-import static org.firstinspires.ftc.teamcode.Constants.HOOK1_UP;
 import static org.firstinspires.ftc.teamcode.Constants.LS_DOWN;
 import static org.firstinspires.ftc.teamcode.Constants.LS_UP;
 import static org.firstinspires.ftc.teamcode.Constants.RS_DOWN;
@@ -66,7 +64,7 @@ public class MecanumTeleOp extends OpMode {
 
         moveLift();
 
-        moveHook();
+        moveHooks();
 
         telemetry.addData("frEncoder", rb.frMotor.getCurrentPosition());
         telemetry.addData("flEncoder", rb.flMotor.getCurrentPosition());
@@ -85,22 +83,22 @@ public class MecanumTeleOp extends OpMode {
         }
     }
 
-    boolean aDown = false;
-    boolean hookDown = false;
-    private void moveHook() {
+    private boolean aDown = false;
+    private boolean hooksDown = false;
+    private void moveHooks() {
         if (gamepad1.a) {
             if (!aDown) {
                 aDown = true;
-                hookDown = !hookDown;
+                hooksDown = !hooksDown;
             }
         } else {
             aDown = false;
         }
 
-        if (hookDown) {
-            rb.hookServo1.setPosition(HOOK1_DOWN);
+        if (hooksDown) {
+            rb.hooksDown();
         } else {
-            rb.hookServo1.setPosition(HOOK1_UP);
+            rb.hooksUp();
         }
     }
 

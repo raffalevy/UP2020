@@ -5,30 +5,37 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
-import static org.firstinspires.ftc.teamcode.Constants.*;
+
+import static org.firstinspires.ftc.teamcode.Constants.HOOK1_DOWN;
+import static org.firstinspires.ftc.teamcode.Constants.HOOK1_UP;
+import static org.firstinspires.ftc.teamcode.Constants.HOOK2_DOWN;
+import static org.firstinspires.ftc.teamcode.Constants.HOOK2_UP;
 
 /**
  * Code for driving the new Mecanum robot
- *
+ * <p>
  * December 2019
  */
 public class MecanumRobot {
     // --------------------------------------
     // Declare motors
 
+    public static final double THETA_TOLERANCE = 0.04;
+    public static double XY_TOLERANCE = .5;
     DcMotor flMotor = null;
     DcMotor frMotor = null;
     DcMotor blMotor = null;
     DcMotor brMotor = null;
     DcMotor liftMotor = null;
-
     Servo leftServo = null;
     Servo rightServo = null;
-
     Servo hookServo1 = null;
     Servo hookServo2 = null;
-
     LinearOpMode opMode;
+
+    public static double angleDiff(double theta1, double theta2) {
+        return Math.atan2(Math.sin(theta1 - theta2), Math.cos(theta1 - theta2));
+    }
 
     void init(HardwareMap hardwareMap, LinearOpMode opMode) {
         this.opMode = opMode;
@@ -67,17 +74,17 @@ public class MecanumRobot {
      * Decide whether to turn or strafe depending on the angle of the joysticks
      */
     void drive(double x_stick, double y_stick, double x_right_stick, double multiplier) {
-            if (Math.abs(x_stick) >= (2 * Math.abs(y_stick)) + .1) {
-                flMotor.setPower(x_stick * multiplier);
-                frMotor.setPower(-x_stick * multiplier);
-                blMotor.setPower(-x_stick * multiplier);
-                brMotor.setPower(x_stick * multiplier);
-            } else {
-                flMotor.setPower((y_stick + x_right_stick) * multiplier);
-                frMotor.setPower((y_stick - x_right_stick) * multiplier);
-                blMotor.setPower((y_stick + x_right_stick) * multiplier);
-                brMotor.setPower((y_stick - x_right_stick) * multiplier);
-            }
+        if (Math.abs(x_stick) >= (2 * Math.abs(y_stick)) + .1) {
+            flMotor.setPower(x_stick * multiplier);
+            frMotor.setPower(-x_stick * multiplier);
+            blMotor.setPower(-x_stick * multiplier);
+            brMotor.setPower(x_stick * multiplier);
+        } else {
+            flMotor.setPower((y_stick + x_right_stick) * multiplier);
+            frMotor.setPower((y_stick - x_right_stick) * multiplier);
+            blMotor.setPower((y_stick + x_right_stick) * multiplier);
+            brMotor.setPower((y_stick - x_right_stick) * multiplier);
+        }
     }
 
     /**
@@ -88,10 +95,6 @@ public class MecanumRobot {
         frMotor.setPower(0);
         blMotor.setPower(0);
         brMotor.setPower(0);
-    }
-
-    void updateOdometry(OdometryIMU odometry) {
-        odometry.update(frMotor.getCurrentPosition(), flMotor.getCurrentPosition(), blMotor.getCurrentPosition());
     }
 
     void driveForward(double power) {
@@ -114,109 +117,86 @@ public class MecanumRobot {
         frMotor.setPower(-power);
         brMotor.setPower(-power);
     }
-    public static double XY_TOLERANCE = .5;
 
-    void goToXY(double targetX, double targetY, double power, OdometryIMU odemetry){
-        double deltaX = odemetry.getX() - targetX;
-        double deltaY = odemetry.getY() - targetY;
-        double theta = Math.atan2(deltaX, deltaY);
-        goToTheta(theta,.3, odemetry, new ElapsedTime(), 1 + (deltaX + deltaY/5));
-        while (opMode.opModeIsActive() && Math.abs(deltaX)> XY_TOLERANCE && Math.abs(deltaY)> XY_TOLERANCE){
-            updateOdometry(odemetry);
-            driveForward(power);
-            opMode.telemetry.update();
-        }
-        driveStop();
-        updateOdometry(odemetry);
-    }
-
-    public static double angleDiff(double theta1, double theta2) {
-        return Math.atan2(Math.sin(theta1-theta2), Math.cos(theta1-theta2));
-    }
-
-    void goToTheta(double targetTheta, double power, OdometryIMU odometry, ElapsedTime runtime, double timeout) {
-        updateOdometry(odometry);
-        if (angleDiff(odometry.getTheta(), targetTheta) > THETA_TOLERANCE) {
+    void goToTheta(double targetTheta, double power, MecanumIMU mimu, ElapsedTime runtime, double timeout) {
+        mimu.update();
+        if (angleDiff(mimu.getTheta(), targetTheta) > THETA_TOLERANCE) {
             turnClockwise(power);
             double startTime = runtime.seconds();
-            while (opMode.opModeIsActive() && runtime.seconds() - startTime < timeout && angleDiff(odometry.getTheta(), targetTheta) > THETA_TOLERANCE) {
-                updateOdometry(odometry);
+            while (opMode.opModeIsActive() && runtime.seconds() - startTime < timeout && angleDiff(mimu.getTheta(), targetTheta) > THETA_TOLERANCE) {
+                mimu.update();
                 Thread.yield();
                 opMode.telemetry.update();
             }
             driveStop();
-            updateOdometry(odometry);
-        } else if (angleDiff(odometry.getTheta(), targetTheta) < -THETA_TOLERANCE) {
+            mimu.update();
+        } else if (angleDiff(mimu.getTheta(), targetTheta) < -THETA_TOLERANCE) {
             turnClockwise(-power);
             double startTime = runtime.seconds();
-            while (opMode.opModeIsActive() && runtime.seconds() - startTime < timeout && angleDiff(odometry.getTheta(), targetTheta) < -THETA_TOLERANCE) {
-                updateOdometry(odometry);
+            while (opMode.opModeIsActive() && runtime.seconds() - startTime < timeout && angleDiff(mimu.getTheta(), targetTheta) < -THETA_TOLERANCE) {
+                mimu.update();
                 Thread.yield();
                 opMode.telemetry.update();
-        }
+            }
             driveStop();
-            updateOdometry(odometry);
+            mimu.update();
         }
     }
 
-
-    public static final double THETA_TOLERANCE = 0.04;
-
-    void goToX(double targetX, double power, OdometryIMU odometry) {
-        updateOdometry(odometry);
-        if (odometry.getX() < targetX) {
-            driveForward(power);
-            while (opMode.opModeIsActive() && odometry.getX() < targetX) {
-                updateOdometry(odometry);
-                Thread.yield();
-                opMode.telemetry.update();
-            }
-            driveStop();
-            updateOdometry(odometry);
-        } else if (odometry.getX() > targetX) {
-            driveForward(power);
-            while (opMode.opModeIsActive() && odometry.getX() > targetX) {
-                updateOdometry(odometry);
-                Thread.yield();
-                opMode.telemetry.update();
-            }
-            driveStop();
-            updateOdometry(odometry);
-        }
-    }
-    void goToY(double targetY, double power, OdometryIMU odometry) {
-        updateOdometry(odometry);
-        if (odometry.getY() < targetY) {
-            driveForward(power);
-            while (opMode.opModeIsActive() && odometry.getY() < targetY) {
-                updateOdometry(odometry);
-                Thread.yield();
-                opMode.telemetry.update();
-            }
-            driveStop();
-            updateOdometry(odometry);
-        } else if (odometry.getY() > targetY) {
-            driveForward(-power);
-            while (opMode.opModeIsActive() && odometry.getY() > targetY) {
-                updateOdometry(odometry);
-                Thread.yield();
-                opMode.telemetry.update();
-            }
-            driveStop();
-            updateOdometry(odometry);
-        }
-    }
-     void resetEncoder(DcMotor motor) {
+    void resetEncoder(DcMotor motor) {
         motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
+
     void hooksDown() {
         hookServo1.setPosition(HOOK1_DOWN);
         hookServo2.setPosition(HOOK2_DOWN);
     }
+
     void hooksUp() {
         hookServo1.setPosition(HOOK1_UP);
         hookServo2.setPosition(HOOK2_UP);
+    }
+
+    void driveForwardByEncoder(int positionChange, DcMotor motor, double power) {
+        power = Math.abs(power);
+        int oldPosition = motor.getCurrentPosition();
+        int targetPosition = oldPosition + positionChange;
+
+        if (positionChange > 0) {
+            driveForward(power);
+            while (opMode.opModeIsActive() && motor.getCurrentPosition() < targetPosition) {
+                Thread.yield();
+            }
+            driveStop();
+        } else if (positionChange < 0) {
+            driveForward(-power);
+            while (opMode.opModeIsActive() && motor.getCurrentPosition() > targetPosition) {
+                Thread.yield();
+            }
+            driveStop();
+        }
+
+    }
+    void strafeRightByEncoder(int positionChange, DcMotor motor, double power) {
+        power = Math.abs(power);
+        int oldPosition = motor.getCurrentPosition();
+        int targetPosition = oldPosition + positionChange;
+
+        if (positionChange > 0) {
+            strafeRight(power);
+            while (opMode.opModeIsActive() && motor.getCurrentPosition() < targetPosition) {
+                Thread.yield();
+            }
+            driveStop();
+        } else if (positionChange < 0) {
+            strafeRight(-power);
+            while (opMode.opModeIsActive() && motor.getCurrentPosition() > targetPosition) {
+                Thread.yield();
+            }
+            driveStop();
+        }
+
     }
 
 }
