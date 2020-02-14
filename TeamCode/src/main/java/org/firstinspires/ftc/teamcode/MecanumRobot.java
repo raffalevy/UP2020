@@ -198,5 +198,23 @@ public class MecanumRobot {
         }
 
     }
+    void turnClockwiseByEncoder (int positionChange, DcMotor motor, double power){
+        power = Math.abs(power);
+        int oldPosition = motor.getCurrentPosition();
+        int targetPosition = oldPosition + positionChange;
 
+        if (positionChange > 0) {
+            turnClockwise(power);
+            while (opMode.opModeIsActive() && motor.getCurrentPosition() < targetPosition) {
+                Thread.yield();
+            }
+            driveStop();
+        } else if (positionChange < 0) {
+            turnClockwise(-power);
+            while (opMode.opModeIsActive() && motor.getCurrentPosition() > targetPosition) {
+                Thread.yield();
+            }
+            driveStop();
+        }
+    }
 }

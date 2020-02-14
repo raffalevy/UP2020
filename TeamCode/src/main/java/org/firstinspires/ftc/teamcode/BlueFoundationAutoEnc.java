@@ -51,8 +51,10 @@ public class BlueFoundationAutoEnc extends LinearOpMode {
         rb.driveForwardByEncoder(-1330, rb.flMotor, .4);
         rb.hooksDown();
         Thread.sleep(1250);
-        rb.driveForwardByEncoder(1330, rb.flMotor, .4);
+        rb.driveForwardByEncoder(1280, rb.flMotor, .4);
+        rb.turnClockwiseByEncoder(-520,rb.flMotor, .4);
         rb.hooksUp();
+        rb.driveForwardByEncoder(600, rb.flMotor, .4);
         rb.strafeRightByEncoder(-1500, rb.flMotor, .4);
 
 //        while (runtime.seconds()<2){
