@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -10,6 +11,7 @@ import org.firstinspires.ftc.robotcore.external.Func;
 import static org.firstinspires.ftc.teamcode.Constants.LS_UP;
 import static org.firstinspires.ftc.teamcode.Constants.RS_UP;
 
+@Disabled
 @Autonomous(name = "RedFAuto", group = "RedAuto")
 public class RedFoundationAuto extends LinearOpMode {
 
