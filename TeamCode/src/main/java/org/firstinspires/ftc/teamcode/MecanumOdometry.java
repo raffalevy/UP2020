@@ -88,14 +88,15 @@ public class MecanumOdometry {
 
         // Update the total displacement using the orientation and encoder displacements
         if (dB > 0 && dC < 0) {
-            dx = (((dB - dC) / 2) * STRAFE_CONSTANT);
+            dx = ((Math.abs(dB) + Math.abs(dC)) / 2) * STRAFE_CONSTANT * Math.cos(theta);
+            dy = ((Math.abs(dB) + Math.abs(dC)) / 2) * STRAFE_CONSTANT * Math.sin(theta);
         } else if (dB < 0 && dC > 0) {
-            dx = -(((dB - dC) / 2) * STRAFE_CONSTANT);
+            dx = -((Math.abs(dB) + Math.abs(dC)) / 2) * STRAFE_CONSTANT * Math.cos(theta);
+            dy = -((Math.abs(dB) + Math.abs(dC)) / 2) * STRAFE_CONSTANT * Math.sin(theta);
         } else {
-
+            dx = (dA + dB) / 2 * Math.sin(theta);
+            dy = (dA + dB) / 2 * Math.cos(theta);
         }
-        dx = ((dA - 2 * dB + dC) * Math.cos(theta) - (dA - dC) * Math.sin(theta)) / 2;
-        dy = ((dA - 2 * dB + dC) * Math.sin(theta) + (dA - dC) * Math.cos(theta)) / 2;
 
         // Add the displacement to the total position
         this.x += dx;

@@ -137,14 +137,16 @@ public class TensorFlowAuto extends LinearOpMode {
                 }
             }
             Collections.sort(updatedRecognitions, new LeftComparator());
+
             for (int i = 0; i < updatedRecognitions.size(); i++) {
                 if (isSkystone(updatedRecognitions.get(i))){
                     allStones.get(i).setSkystone(true);
                 } else allStones.get(i).setSkystone(false);
             }
-            stone4=stone1;
-            stone5=stone2;
-            stone6=stone3;
+            stone4.setSkystone(stone1.isSkystone());
+            stone5.setSkystone(stone2.isSkystone());
+            stone6.setSkystone(stone3.isSkystone());
+
             if (updatedRecognitions != null) {
                 telemetry.addData("# Object Detected", updatedRecognitions.size());
                 // step through the list of recognitions and display boundary info.
