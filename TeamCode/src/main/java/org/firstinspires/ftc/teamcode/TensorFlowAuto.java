@@ -32,6 +32,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
@@ -88,6 +89,9 @@ public class TensorFlowAuto extends LinearOpMode {
      */
     private TFObjectDetector tfod;
 
+    private ElapsedTime runtime = new ElapsedTime();
+
+    private MecanumRobot rb = new MecanumRobot();
 
     @Override
     public void runOpMode() {
@@ -158,8 +162,26 @@ public class TensorFlowAuto extends LinearOpMode {
 
         waitForStart();
 
-        if (opModeIsActive()) {
-            while (opModeIsActive()) {
+        while (opModeIsActive()) {
+            if (stone1.isSkystone()){
+                rb.strafeRightByEncoder(100,rb.flMotor,.4);
+                rb.driveForwardByEncoder(150,rb.flMotor,.4);
+                rb.grab();
+                rb.driveForwardByEncoder(-150,rb.flMotor,.4);
+                rb.turnClockwiseByEncoder(-520, rb.flMotor,.4);
+            } else if (stone2.isSkystone()){
+                rb.strafeRightByEncoder(200,rb.flMotor,.4);
+                rb.driveForwardByEncoder(150,rb.flMotor,.4);
+                rb.grab();
+                rb.driveForwardByEncoder(-150,rb.flMotor,.4);
+                rb.turnClockwiseByEncoder(-520, rb.flMotor,.4);
+            } else if (stone3.isSkystone()){
+                rb.strafeRightByEncoder(300,rb.flMotor,.4);
+                rb.driveForwardByEncoder(150,rb.flMotor,.4);
+                rb.grab();
+                rb.driveForwardByEncoder(-150,rb.flMotor,.4);
+                rb.turnClockwiseByEncoder(-520, rb.flMotor,.4);
+            } else {
 
             }
         }

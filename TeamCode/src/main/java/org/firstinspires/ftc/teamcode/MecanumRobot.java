@@ -10,6 +10,10 @@ import static org.firstinspires.ftc.teamcode.Constants.HOOK1_DOWN;
 import static org.firstinspires.ftc.teamcode.Constants.HOOK1_UP;
 import static org.firstinspires.ftc.teamcode.Constants.HOOK2_DOWN;
 import static org.firstinspires.ftc.teamcode.Constants.HOOK2_UP;
+import static org.firstinspires.ftc.teamcode.Constants.LS_DOWN;
+import static org.firstinspires.ftc.teamcode.Constants.LS_UP;
+import static org.firstinspires.ftc.teamcode.Constants.RS_DOWN;
+import static org.firstinspires.ftc.teamcode.Constants.RS_UP;
 
 /**
  * Code for driving the new Mecanum robot
@@ -216,5 +220,13 @@ public class MecanumRobot {
             }
             driveStop();
         }
+    }
+    void grab (){
+        leftServo.setPosition(LS_DOWN);
+        rightServo.setPosition(RS_DOWN);
+    }
+    void release (){
+        leftServo.setPosition(LS_UP);
+        rightServo.setPosition(RS_UP);
     }
 }
