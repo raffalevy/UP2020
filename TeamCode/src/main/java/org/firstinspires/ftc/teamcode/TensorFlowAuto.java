@@ -127,44 +127,45 @@ public class TensorFlowAuto extends LinearOpMode {
         if (tfod != null) {
             tfod.activate();
         }
-        if (tfod != null) {
-            // getUpdatedRecognitions() will return null if no new information is available since
-            // the last time that call was made.
-            List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
-            class LeftComparator implements Comparator<Recognition> {
-                public int compare(Recognition r1, Recognition r2) {
-                    return ((int) r1.getLeft()) - ((int) r2.getLeft());
-                }
-            }
-            Collections.sort(updatedRecognitions, new LeftComparator());
 
-            for (int i = 0; i < updatedRecognitions.size(); i++) {
-                if (isSkystone(updatedRecognitions.get(i))){
-                    allStones.get(i).setSkystone(true);
-                } else allStones.get(i).setSkystone(false);
-            }
-            stone4.setSkystone(stone1.isSkystone());
-            stone5.setSkystone(stone2.isSkystone());
-            stone6.setSkystone(stone3.isSkystone());
-
-            if (updatedRecognitions != null) {
-                telemetry.addData("# Object Detected", updatedRecognitions.size());
-                // step through the list of recognitions and display boundary info.
-                int i = 0;
-                for (Recognition recognition : updatedRecognitions) {
-                    telemetry.addData(String.format("label (%d)", i), recognition.getLabel());
-                    telemetry.addData(String.format("  left,top (%d)", i), "%.03f , %.03f",
-                            recognition.getLeft(), recognition.getTop());
-                    telemetry.addData(String.format("  right,bottom (%d)", i), "%.03f , %.03f",
-                            recognition.getRight(), recognition.getBottom());
-                }
-                telemetry.update();
-            }
-        }
 
         waitForStart();
 
         while (opModeIsActive()) {
+            if (tfod != null) {
+                // getUpdatedRecognitions() will return null if no new information is available since
+                // the last time that call was made.
+                List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
+                class LeftComparator implements Comparator<Recognition> {
+                    public int compare(Recognition r1, Recognition r2) {
+                        return ((int) r1.getLeft()) - ((int) r2.getLeft());
+                    }
+                }
+                Collections.sort(updatedRecognitions, new LeftComparator());
+
+                for (int i = 0; i < updatedRecognitions.size(); i++) {
+                    if (isSkystone(updatedRecognitions.get(i))){
+                        allStones.get(i).setSkystone(true);
+                    } else allStones.get(i).setSkystone(false);
+                }
+                stone4.setSkystone(stone1.isSkystone());
+                stone5.setSkystone(stone2.isSkystone());
+                stone6.setSkystone(stone3.isSkystone());
+
+                if (updatedRecognitions != null) {
+                    telemetry.addData("# Object Detected", updatedRecognitions.size());
+                    // step through the list of recognitions and display boundary info.
+                    int i = 0;
+                    for (Recognition recognition : updatedRecognitions) {
+                        telemetry.addData(String.format("label (%d)", i), recognition.getLabel());
+                        telemetry.addData(String.format("  left,top (%d)", i), "%.03f , %.03f",
+                                recognition.getLeft(), recognition.getTop());
+                        telemetry.addData(String.format("  right,bottom (%d)", i), "%.03f , %.03f",
+                                recognition.getRight(), recognition.getBottom());
+                    }
+                    telemetry.update();
+                }
+            }
             if (stone1.isSkystone()){
                 rb.strafeRightByEncoder(100,rb.flMotor,.4);
                 rb.driveForwardByEncoder(150,rb.flMotor,.4);
