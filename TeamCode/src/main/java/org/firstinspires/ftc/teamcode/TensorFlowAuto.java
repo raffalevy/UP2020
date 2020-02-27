@@ -93,6 +93,8 @@ public class TensorFlowAuto extends LinearOpMode {
 
     private MecanumRobot rb = new MecanumRobot();
 
+    private MecanumOdometry odometry = new MecanumOdometry();
+
     @Override
     public void runOpMode() {
         // The TFObjectDetector uses the camera frames from the VuforiaLocalizer, so we create that
@@ -127,8 +129,7 @@ public class TensorFlowAuto extends LinearOpMode {
         if (tfod != null) {
             tfod.activate();
         }
-
-
+        odometry.start(rb.frMotor.getCurrentPosition(),rb.flMotor.getCurrentPosition(),rb.blMotor.getCurrentPosition());
         waitForStart();
 
         while (opModeIsActive()) {
@@ -166,28 +167,29 @@ public class TensorFlowAuto extends LinearOpMode {
                     telemetry.update();
                 }
             }
-            if (stone1.isSkystone()){
-                rb.strafeRightByEncoder(100,rb.flMotor,.4);
-                rb.driveForwardByEncoder(150,rb.flMotor,.4);
-                rb.grab();
-                rb.driveForwardByEncoder(-150,rb.flMotor,.4);
-                rb.turnClockwiseByEncoder(-520, rb.flMotor,.4);
-            } else if (stone2.isSkystone()){
-                rb.strafeRightByEncoder(200,rb.flMotor,.4);
-                rb.driveForwardByEncoder(150,rb.flMotor,.4);
-                rb.grab();
-                rb.driveForwardByEncoder(-150,rb.flMotor,.4);
-                rb.turnClockwiseByEncoder(-520, rb.flMotor,.4);
-            } else if (stone3.isSkystone()){
-                rb.strafeRightByEncoder(300,rb.flMotor,.4);
-                rb.driveForwardByEncoder(150,rb.flMotor,.4);
-                rb.grab();
-                rb.driveForwardByEncoder(-150,rb.flMotor,.4);
-                rb.turnClockwiseByEncoder(-520, rb.flMotor,.4);
-            } else {
+                if (stone1.isSkystone()){
+                    rb.strafeRightByEncoder(100,rb.flMotor,.4);
+                    rb.driveForwardByEncoder(150,rb.flMotor,.4);
+                    rb.grab();
+                    rb.driveForwardByEncoder(-150,rb.flMotor,.4);
+                    rb.turnClockwiseByEncoder(-520, rb.flMotor,.4);
+                } else if (stone2.isSkystone()){
+                    rb.strafeRightByEncoder(200,rb.flMotor,.4);
+                    rb.driveForwardByEncoder(150,rb.flMotor,.4);
+                    rb.grab();
+                    rb.driveForwardByEncoder(-150,rb.flMotor,.4);
+                    rb.turnClockwiseByEncoder(-520, rb.flMotor,.4);
+                } else if (stone3.isSkystone()){
+                    rb.strafeRightByEncoder(300,rb.flMotor,.4);
+                    rb.driveForwardByEncoder(150,rb.flMotor,.4);
+                    rb.grab();
+                    rb.driveForwardByEncoder(-150,rb.flMotor,.4);
+                    rb.turnClockwiseByEncoder(-520, rb.flMotor,.4);
+                } else {
 
+                }
             }
-        }
+
 
         if (tfod != null) {
             tfod.shutdown();

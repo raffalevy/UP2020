@@ -22,14 +22,14 @@ public class Stone {
     public void setSkystone(boolean skystone) {
         isSkystone = skystone;
     }
-    public Stone(int centerX, int centerY, boolean givenIsSkystone){
-        x = centerX;
-        y = centerY;
+    public Stone(int pickupX, int pickupY, boolean givenIsSkystone){
+        x = pickupX;
+        y = pickupY;
         isSkystone = givenIsSkystone;
     }
-    public Stone(int centerX, int centerY) {
-        x = centerX;
-        y = centerY;
+    public Stone(int pickupX, int pickupY) {
+        x = pickupX;
+        y = pickupY;
     }
     public Stone() {
     }

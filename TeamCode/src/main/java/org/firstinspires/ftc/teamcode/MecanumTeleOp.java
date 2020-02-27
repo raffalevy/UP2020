@@ -75,11 +75,9 @@ public class MecanumTeleOp extends OpMode {
 
     private void moveGrabbers() {
         if (gamepad2.left_bumper) {
-            rb.leftServo.setPosition(LS_UP);
-            rb.rightServo.setPosition(RS_UP);
+            rb.release();
         } else if (gamepad2.right_bumper) {
-            rb.leftServo.setPosition(LS_DOWN);
-            rb.rightServo.setPosition(RS_DOWN);
+            rb.grab();
         }
     }
 
