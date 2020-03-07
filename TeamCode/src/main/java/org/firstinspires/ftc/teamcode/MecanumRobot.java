@@ -25,7 +25,7 @@ public class MecanumRobot {
     // Declare motors
 
     public static final double THETA_TOLERANCE = 0.04;
-    public static double XY_TOLERANCE = .5;
+    public static double XY_TOLERANCE = 0.05;
     DcMotor flMotor = null;
     DcMotor frMotor = null;
     DcMotor blMotor = null;
@@ -229,8 +229,8 @@ public class MecanumRobot {
         }
     }
 
-    void strafetoX (double targetX, double power, MecanumOdometry odometry, ElapsedTime runtime, double timeout){
-        int forwardsBackwardsFactor = 1;
+    void strafeToX(double targetX, double power, MecanumOdometry odometry, ElapsedTime runtime, double timeout){
+        int forwardsBackwardsFactor;
         if (odometry.getTheta() > Math.PI/2 && odometry.getTheta() < 3 * Math.PI / 2){
             goToTheta(Math.PI,.7,odometry, runtime , timeout);
             forwardsBackwardsFactor = -1;
@@ -262,7 +262,7 @@ public class MecanumRobot {
         }
     }
 
-    void strafetoY (double targetY, double power, MecanumOdometry odometry, ElapsedTime runtime, double timeout){
+    void strafeToY(double targetY, double power, MecanumOdometry odometry, ElapsedTime runtime, double timeout){
         int forwardsBackwardsFactor;
         if (odometry.getTheta() > Math.PI && odometry.getTheta() < 2 * Math.PI){
             goToTheta(3 * Math.PI / 2,.7,odometry, runtime , timeout);
@@ -293,5 +293,77 @@ public class MecanumRobot {
             driveStop();
             odometry.update(frMotor.getCurrentPosition(),flMotor.getCurrentPosition(),blMotor.getCurrentPosition());
         }
+    }
+    void driveToX(double targetX, double power, MecanumOdometry odometry, ElapsedTime runtime, double timeout){
+        int forwardsBackwardsFactor;
+        if (odometry.getTheta() > Math.PI && odometry.getTheta() < 2 * Math.PI){
+            goToTheta(3 * Math.PI / 2,.7,odometry, runtime , timeout);
+            forwardsBackwardsFactor = 1;
+        } else {
+            goToTheta(Math.PI / 2,.7,odometry, runtime , timeout);
+            forwardsBackwardsFactor = -1;
+        }
+        odometry.update(frMotor.getCurrentPosition(),flMotor.getCurrentPosition(),blMotor.getCurrentPosition());
+        if (odometry.getX() < targetX){
+            driveForward(power * forwardsBackwardsFactor);
+            double startTime = runtime.seconds();
+            while (opMode.opModeIsActive() && runtime.seconds() - startTime < timeout && odometry.getX() < targetX) {
+                odometry.update(frMotor.getCurrentPosition(),flMotor.getCurrentPosition(),blMotor.getCurrentPosition());
+                Thread.yield();
+                opMode.telemetry.update();
+            }
+            driveStop();
+            odometry.update(frMotor.getCurrentPosition(),flMotor.getCurrentPosition(),blMotor.getCurrentPosition());
+        } else if (odometry.getX() > targetX){
+            driveForward(-power * forwardsBackwardsFactor);
+            double startTime = runtime.seconds();
+            while (opMode.opModeIsActive() && runtime.seconds() - startTime < timeout && odometry.getX() > targetX) {
+                odometry.update(frMotor.getCurrentPosition(),flMotor.getCurrentPosition(),blMotor.getCurrentPosition());
+                Thread.yield();
+                opMode.telemetry.update();
+            }
+            driveStop();
+            odometry.update(frMotor.getCurrentPosition(),flMotor.getCurrentPosition(),blMotor.getCurrentPosition());
+        }
+    }
+    void driveToY(double targetY, double power, MecanumOdometry odometry, ElapsedTime runtime, double timeout){
+        int forwardsBackwardsFactor;
+        if (odometry.getTheta() > Math.PI/2 && odometry.getTheta() < 3 * Math.PI / 2){
+            goToTheta(Math.PI,.7,odometry, runtime , timeout);
+            forwardsBackwardsFactor = -1;
+        } else {
+            goToTheta(0,.7,odometry, runtime , timeout);
+            forwardsBackwardsFactor = 1;
+        }
+        odometry.update(frMotor.getCurrentPosition(),flMotor.getCurrentPosition(),blMotor.getCurrentPosition());
+        if (odometry.getY() < targetY){
+            driveForward(power * forwardsBackwardsFactor);
+            double startTime = runtime.seconds();
+            while (opMode.opModeIsActive() && runtime.seconds() - startTime < timeout && odometry.getY() < targetY) {
+                odometry.update(frMotor.getCurrentPosition(),flMotor.getCurrentPosition(),blMotor.getCurrentPosition());
+                Thread.yield();
+                opMode.telemetry.update();
+            }
+            driveStop();
+            odometry.update(frMotor.getCurrentPosition(),flMotor.getCurrentPosition(),blMotor.getCurrentPosition());
+        } else if (odometry.getY() > targetY){
+            driveForward(-power * forwardsBackwardsFactor);
+            double startTime = runtime.seconds();
+            while (opMode.opModeIsActive() && runtime.seconds() - startTime < timeout && odometry.getY() > targetY) {
+                odometry.update(frMotor.getCurrentPosition(),flMotor.getCurrentPosition(),blMotor.getCurrentPosition());
+                Thread.yield();
+                opMode.telemetry.update();
+            }
+            driveStop();
+            odometry.update(frMotor.getCurrentPosition(),flMotor.getCurrentPosition(),blMotor.getCurrentPosition());
+        }
+    }
+    void correctedStrafeRight(double power, MecanumOdometry odometry, ElapsedTime runtime){
+        double startingtheta = odometry.getTheta();
+        flMotor.setPower(power);
+        blMotor.setPower(-power);
+        frMotor.setPower(-power);
+        brMotor.setPower(power);
+        goToTheta(startingtheta, 1, odometry, runtime, 1);
     }
 }

@@ -29,7 +29,6 @@
 
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -55,8 +54,7 @@ import java.util.List;
  * IMPORTANT: In order to use this OpMode, you need to obtain your own Vuforia license key as
  * is explained below.
  */
-@TeleOp(name = "Concept: TensorFlow Object Detection Webcam", group = "Concept")
-@Disabled
+@TeleOp(name = "TensorFlowAuto", group = "Concept")
 public class TensorFlowAuto extends LinearOpMode {
     private static final String TFOD_MODEL_ASSET = "Skystone.tflite";
     private static final String LABEL_FIRST_ELEMENT = "Stone";
@@ -107,12 +105,12 @@ public class TensorFlowAuto extends LinearOpMode {
             telemetry.addData("Sorry!", "This device is not compatible with TFOD");
         }
 
-        Stone stone1 = new Stone(30,20);
-        Stone stone2 = new Stone(30,40);
-        Stone stone3 = new Stone(30,60);
-        Stone stone4 = new Stone(30,80);
-        Stone stone5 = new Stone(30,100);
-        Stone stone6 = new Stone(30,120);
+        Stone stone1 = new Stone(-8,48);
+        Stone stone2 = new Stone(0,48);
+        Stone stone3 = new Stone(8,48);
+        Stone stone4 = new Stone(16,48);
+        Stone stone5 = new Stone(24,48);
+        Stone stone6 = new Stone(32,48);
 
         List<Stone> allStones = new ArrayList<>();
         allStones.add(stone1);
@@ -159,7 +157,7 @@ public class TensorFlowAuto extends LinearOpMode {
                     int i = 0;
                     for (Recognition recognition : updatedRecognitions) {
                         telemetry.addData(String.format("label (%d)", i), recognition.getLabel());
-                        telemetry.addData(String.format("  left,top (%d)", i), "%.03f , %.03f",
+                        telemetry.addData(String.format("left,top (%d)", i), "%.03f , %.03f",
                                 recognition.getLeft(), recognition.getTop());
                         telemetry.addData(String.format("  right,bottom (%d)", i), "%.03f , %.03f",
                                 recognition.getRight(), recognition.getBottom());
@@ -168,29 +166,92 @@ public class TensorFlowAuto extends LinearOpMode {
                 }
             }
                 if (stone1.isSkystone()){
-                    rb.strafeRightByEncoder(100,rb.flMotor,.4);
-                    rb.driveForwardByEncoder(150,rb.flMotor,.4);
+                    rb.strafeToX(stone1.getX(),.7, odometry, runtime, 10);
+                    rb.driveToY(stone1.getY() ,.7,odometry, runtime, 10);
                     rb.grab();
-                    rb.driveForwardByEncoder(-150,rb.flMotor,.4);
-                    rb.turnClockwiseByEncoder(-520, rb.flMotor,.4);
+                    rb.driveToY(stone1.getY()-12,.7,odometry,runtime,10);
+                    rb.goToTheta(Math.PI / 2, .7, odometry, runtime, 10);
+                    rb.driveToX(50,.7, odometry, runtime,10);
+                    rb.release();
+                    rb.goToTheta(3 * Math.PI / 2, .7, odometry, runtime, 10);
+                    rb.strafeToY(12,.7 ,odometry, runtime, 10);
+                    rb.driveToX(stone4.getX(), .7, odometry, runtime, 10);
+                    rb.goToTheta(0,.7,odometry,runtime,10);
+                    rb.driveToY(stone4.getY(),.7,odometry,runtime,10);
+                    rb.grab();
+                    rb.driveToY(stone4.getY()-12,.7,odometry,runtime,10);
+                    rb.goToTheta(Math.PI / 2, .7, odometry, runtime, 10);
+                    rb.driveToX(50,.7, odometry, runtime,10);
+                    rb.release();
+                    rb.strafeToY(0,.7,odometry,runtime,10);
+                    rb.driveToX(70,.7, odometry, runtime, 10);
+                    rb.goToTheta(Math.PI,.7, odometry, runtime, 10);
+                    rb.driveToY(48,.7,odometry,runtime, 10);
+                    rb.hooksDown();
+                    rb.driveToY(0, .7, odometry, runtime, 10);
+                    rb.hooksUp();
+                    rb.strafeToX(30, .7, odometry, runtime, 10);
+                    rb.driveToY(30, .7, odometry, runtime, 10);
+                    rb.strafeToX(24, .7, odometry, runtime, 10);
                 } else if (stone2.isSkystone()){
-                    rb.strafeRightByEncoder(200,rb.flMotor,.4);
-                    rb.driveForwardByEncoder(150,rb.flMotor,.4);
+                    rb.strafeToX(stone2.getX(),.7, odometry, runtime, 10);
+                    rb.driveToY(stone2.getY() ,.7,odometry, runtime, 10);
                     rb.grab();
-                    rb.driveForwardByEncoder(-150,rb.flMotor,.4);
-                    rb.turnClockwiseByEncoder(-520, rb.flMotor,.4);
+                    rb.driveToY(stone2.getY()-12,.7,odometry,runtime,10);
+                    rb.goToTheta(Math.PI / 2, .7, odometry, runtime, 10);
+                    rb.driveToX(50,.7, odometry, runtime,10);
+                    rb.release();
+                    rb.goToTheta(3 * Math.PI / 2, .7, odometry, runtime, 10);
+                    rb.strafeToY(12,.7 ,odometry, runtime, 10);
+                    rb.driveToX(stone5.getX(), .7, odometry, runtime, 10);
+                    rb.goToTheta(0,.7,odometry,runtime,10);
+                    rb.driveToY(stone5.getY(),.7,odometry,runtime,10);
+                    rb.grab();
+                    rb.driveToY(stone5.getY()-12,.7,odometry,runtime,10);
+                    rb.goToTheta(Math.PI / 2, .7, odometry, runtime, 10);
+                    rb.driveToX(50,.7, odometry, runtime,10);
+                    rb.release();
+                    rb.strafeToY(0,.7,odometry,runtime,10);
+                    rb.driveToX(70,.7, odometry, runtime, 10);
+                    rb.goToTheta(Math.PI,.7, odometry, runtime, 10);
+                    rb.driveToY(48,.7,odometry,runtime, 10);
+                    rb.hooksDown();
+                    rb.driveToY(0, .7, odometry, runtime, 10);
+                    rb.hooksUp();
+                    rb.strafeToX(30, .7, odometry, runtime, 10);
+                    rb.driveToY(30, .7, odometry, runtime, 10);
+                    rb.strafeToX(24, .7, odometry, runtime, 10);
                 } else if (stone3.isSkystone()){
-                    rb.strafeRightByEncoder(300,rb.flMotor,.4);
-                    rb.driveForwardByEncoder(150,rb.flMotor,.4);
+                    rb.strafeToX(stone3.getX(),.7, odometry, runtime, 10);
+                    rb.driveToY(stone3.getY() ,.7,odometry, runtime, 10);
                     rb.grab();
-                    rb.driveForwardByEncoder(-150,rb.flMotor,.4);
-                    rb.turnClockwiseByEncoder(-520, rb.flMotor,.4);
-                } else {
-
+                    rb.driveToY(stone3.getY()-12,.7,odometry,runtime,10);
+                    rb.goToTheta(Math.PI / 2, .7, odometry, runtime, 10);
+                    rb.driveToX(50,.7, odometry, runtime,10);
+                    rb.release();
+                    rb.goToTheta(3 * Math.PI / 2, .7, odometry, runtime, 10);
+                    rb.strafeToY(12,.7 ,odometry, runtime, 10);
+                    rb.driveToX(stone6.getX(), .7, odometry, runtime, 10);
+                    rb.goToTheta(0,.7,odometry,runtime,10);
+                    rb.driveToY(stone6.getY(),.7,odometry,runtime,10);
+                    rb.grab();
+                    rb.driveToY(stone6.getY()-12,.7,odometry,runtime,10);
+                    rb.goToTheta(Math.PI / 2, .7, odometry, runtime, 10);
+                    rb.driveToX(50,.7, odometry, runtime,10);
+                    rb.release();
+                    rb.strafeToY(0,.7,odometry,runtime,10);
+                    rb.driveToX(70,.7, odometry, runtime, 10);
+                    rb.goToTheta(Math.PI,.7, odometry, runtime, 10);
+                    rb.driveToY(48,.7,odometry,runtime, 10);
+                    rb.hooksDown();
+                    rb.driveToY(0, .7, odometry, runtime, 10);
+                    rb.hooksUp();
+                    rb.strafeToX(30, .7, odometry, runtime, 10);
+                    rb.driveToY(30, .7, odometry, runtime, 10);
+                    rb.strafeToX(24, .7, odometry, runtime, 10);
                 }
+                stop();
             }
-
-
         if (tfod != null) {
             tfod.shutdown();
         }

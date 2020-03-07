@@ -7,7 +7,8 @@ public class MecanumOdometry {
     public static final double CM_PER_TICK_A = -100.0 / 1673.0;
     public static final double CM_PER_TICK_B = -100.0 / 1693.0;
     public static final double CM_PER_TICK_C = -100.0 / 1434.0;
-    public static final double STRAFE_CONSTANT = 1;
+    // This is theoretically correct, but may need to be changed in practice
+    public static final double STRAFE_CONSTANT = .5;
 
     // The current position and orientation of the robot
     private double x = 0;
@@ -48,7 +49,7 @@ public class MecanumOdometry {
 
     /**
      * Should be called when the OpMode is started
-     *
+     * Once again
      * @param a The current front-right encoder value
      * @param b The current front-left encoder value
      * @param c The current back-left encoder value
@@ -87,12 +88,13 @@ public class MecanumOdometry {
         theta = imu.getZAngle() - startingAngle;
 
         // Update the total displacement using the orientation and encoder displacements
+        double averageEncoderChange = (Math.abs(dB) + Math.abs(dC)) / 2;
         if (dB > 0 && dC < 0) {
-            dx = ((Math.abs(dB) + Math.abs(dC)) / 2) * STRAFE_CONSTANT * Math.cos(theta);
-            dy = ((Math.abs(dB) + Math.abs(dC)) / 2) * STRAFE_CONSTANT * Math.sin(theta);
+            dx = averageEncoderChange * STRAFE_CONSTANT * Math.cos(theta);
+            dy = averageEncoderChange * STRAFE_CONSTANT * Math.sin(theta);
         } else if (dB < 0 && dC > 0) {
-            dx = -((Math.abs(dB) + Math.abs(dC)) / 2) * STRAFE_CONSTANT * Math.cos(theta);
-            dy = -((Math.abs(dB) + Math.abs(dC)) / 2) * STRAFE_CONSTANT * Math.sin(theta);
+            dx = -averageEncoderChange * STRAFE_CONSTANT * Math.cos(theta);
+            dy = -averageEncoderChange * STRAFE_CONSTANT * Math.sin(theta);
         } else {
             dx = (dA + dB) / 2 * Math.sin(theta);
             dy = (dA + dB) / 2 * Math.cos(theta);
@@ -102,5 +104,4 @@ public class MecanumOdometry {
         this.x += dx;
         this.y += dy;
     }
-
 }
