@@ -29,12 +29,12 @@
 
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
-import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
@@ -54,8 +54,8 @@ import java.util.List;
  * IMPORTANT: In order to use this OpMode, you need to obtain your own Vuforia license key as
  * is explained below.
  */
-@TeleOp(name = "TensorFlowAuto", group = "Concept")
-public class TensorFlowAuto extends LinearOpMode {
+@Autonomous(name = "TensorFlowAuto", group = "Auto")
+public class TensorFlowAutoBlue extends LinearOpMode {
     private static final String TFOD_MODEL_ASSET = "Skystone.tflite";
     private static final String LABEL_FIRST_ELEMENT = "Stone";
     private static final String LABEL_SECOND_ELEMENT = "Skystone";
@@ -105,12 +105,12 @@ public class TensorFlowAuto extends LinearOpMode {
             telemetry.addData("Sorry!", "This device is not compatible with TFOD");
         }
 
-        Stone stone1 = new Stone(-8,48);
-        Stone stone2 = new Stone(0,48);
-        Stone stone3 = new Stone(8,48);
-        Stone stone4 = new Stone(16,48);
-        Stone stone5 = new Stone(24,48);
-        Stone stone6 = new Stone(32,48);
+        Stone stone1 = new Stone(0,35);
+        Stone stone2 = new Stone(8,35);
+        Stone stone3 = new Stone(16,35);
+        Stone stone4 = new Stone(24,35);
+        Stone stone5 = new Stone(32,35);
+        Stone stone6 = new Stone(40,35);
 
         List<Stone> allStones = new ArrayList<>();
         allStones.add(stone1);
@@ -131,42 +131,26 @@ public class TensorFlowAuto extends LinearOpMode {
         waitForStart();
 
         while (opModeIsActive()) {
+            rb.driveToY(12,.7,odometry,runtime,10);
             if (tfod != null) {
                 // getUpdatedRecognitions() will return null if no new information is available since
                 // the last time that call was made.
                 List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
-                class LeftComparator implements Comparator<Recognition> {
-                    public int compare(Recognition r1, Recognition r2) {
-                        return ((int) r1.getLeft()) - ((int) r2.getLeft());
+                if (updatedRecognitions.get(0).getLabel().equals("Skystone")){
+                    stone1.setSkystone(true);
+                } else {
+                    rb.strafeToX(4.,.7,odometry,runtime,10);
+                    updatedRecognitions = tfod.getUpdatedRecognitions();
+                    if (updatedRecognitions.get(0).getLabel().equals("Skystone")) {
+                        stone2.setSkystone(true);
                     }
-                }
-                Collections.sort(updatedRecognitions, new LeftComparator());
-
-                for (int i = 0; i < updatedRecognitions.size(); i++) {
-                    if (isSkystone(updatedRecognitions.get(i))){
-                        allStones.get(i).setSkystone(true);
-                    } else allStones.get(i).setSkystone(false);
-                }
-                stone4.setSkystone(stone1.isSkystone());
-                stone5.setSkystone(stone2.isSkystone());
-                stone6.setSkystone(stone3.isSkystone());
-
-                if (updatedRecognitions != null) {
-                    telemetry.addData("# Object Detected", updatedRecognitions.size());
-                    // step through the list of recognitions and display boundary info.
-                    int i = 0;
-                    for (Recognition recognition : updatedRecognitions) {
-                        telemetry.addData(String.format("label (%d)", i), recognition.getLabel());
-                        telemetry.addData(String.format("left,top (%d)", i), "%.03f , %.03f",
-                                recognition.getLeft(), recognition.getTop());
-                        telemetry.addData(String.format("  right,bottom (%d)", i), "%.03f , %.03f",
-                                recognition.getRight(), recognition.getBottom());
-                    }
-                    telemetry.update();
+                        else {
+                            stone3.setSkystone(true);
+                        }
                 }
             }
                 if (stone1.isSkystone()){
-                    rb.strafeToX(stone1.getX(),.7, odometry, runtime, 10);
+                    rb.strafeToX(stone1.getX() ,.7, odometry, runtime, 10);
                     rb.driveToY(stone1.getY() ,.7,odometry, runtime, 10);
                     rb.grab();
                     rb.driveToY(stone1.getY()-12,.7,odometry,runtime,10);
@@ -193,6 +177,7 @@ public class TensorFlowAuto extends LinearOpMode {
                     rb.strafeToX(30, .7, odometry, runtime, 10);
                     rb.driveToY(30, .7, odometry, runtime, 10);
                     rb.strafeToX(24, .7, odometry, runtime, 10);
+                    stop();
                 } else if (stone2.isSkystone()){
                     rb.strafeToX(stone2.getX(),.7, odometry, runtime, 10);
                     rb.driveToY(stone2.getY() ,.7,odometry, runtime, 10);
@@ -250,7 +235,6 @@ public class TensorFlowAuto extends LinearOpMode {
                     rb.driveToY(30, .7, odometry, runtime, 10);
                     rb.strafeToX(24, .7, odometry, runtime, 10);
                 }
-                stop();
             }
         if (tfod != null) {
             tfod.shutdown();
@@ -267,7 +251,7 @@ public class TensorFlowAuto extends LinearOpMode {
         VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters();
 
         parameters.vuforiaLicenseKey = VUFORIA_KEY;
-        parameters.cameraName = hardwareMap.get(WebcamName.class, "CAM");
+        parameters.cameraDirection = VuforiaLocalizer.CameraDirection.BACK;
 
         //  Instantiate the Vuforia engine
         vuforia = ClassFactory.getInstance().createVuforia(parameters);
@@ -282,7 +266,7 @@ public class TensorFlowAuto extends LinearOpMode {
         int tfodMonitorViewId = hardwareMap.appContext.getResources().getIdentifier(
             "tfodMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         TFObjectDetector.Parameters tfodParameters = new TFObjectDetector.Parameters(tfodMonitorViewId);
-       tfodParameters.minimumConfidence = 0.6;
+       tfodParameters.minimumConfidence = 0.7;
        tfod = ClassFactory.getInstance().createTFObjectDetector(tfodParameters, vuforia);
        tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABEL_FIRST_ELEMENT, LABEL_SECOND_ELEMENT);
     }

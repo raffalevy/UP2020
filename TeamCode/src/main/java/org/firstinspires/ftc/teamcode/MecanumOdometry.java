@@ -4,9 +4,9 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 public class MecanumOdometry {
     // Encoder constants
-    public static final double CM_PER_TICK_A = -100.0 / 1673.0;
-    public static final double CM_PER_TICK_B = -100.0 / 1693.0;
-    public static final double CM_PER_TICK_C = -100.0 / 1434.0;
+    public static final double CM_PER_TICK_A = 357.0 / 10.0;
+    public static final double CM_PER_TICK_B = 389.0 / 10.0;
+    public static final double CM_PER_TICK_C = 368.0 / 10.0;
     // This is theoretically correct, but may need to be changed in practice
     public static final double STRAFE_CONSTANT = .5;
 

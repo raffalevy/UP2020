@@ -62,8 +62,6 @@ public class MecanumTeleOp extends OpMode {
 
         moveGrabbers();
 
-        moveLift();
-
         moveHooks();
 
         telemetry.addData("frEncoder", rb.frMotor.getCurrentPosition());
@@ -97,16 +95,6 @@ public class MecanumTeleOp extends OpMode {
             rb.hooksDown();
         } else {
             rb.hooksUp();
-        }
-    }
-
-    private void moveLift() {
-        if (gamepad2.left_stick_y >= 0.2) {
-            rb.liftMotor.setPower(gamepad2.left_stick_y * .75);
-        } else if (gamepad2.left_stick_y <= -0.2) {
-            rb.liftMotor.setPower(gamepad2.left_stick_y * .75);
-        } else {
-            rb.liftMotor.setPower(0);
         }
     }
     /**

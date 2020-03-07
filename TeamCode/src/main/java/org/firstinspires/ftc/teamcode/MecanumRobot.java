@@ -30,7 +30,6 @@ public class MecanumRobot {
     DcMotor frMotor = null;
     DcMotor blMotor = null;
     DcMotor brMotor = null;
-    DcMotor liftMotor = null;
     Servo leftServo = null;
     Servo rightServo = null;
     Servo hookServo1 = null;
@@ -40,37 +39,32 @@ public class MecanumRobot {
     public static double angleDiff(double theta1, double theta2) {
         return Math.atan2(Math.sin(theta1 - theta2), Math.cos(theta1 - theta2));
     }
-
     void init(HardwareMap hardwareMap, LinearOpMode opMode) {
         this.opMode = opMode;
 
-        // Initialize drive motors
+        // Initialize drive motors no U
         flMotor = hardwareMap.get(DcMotor.class, "FL");
         frMotor = hardwareMap.get(DcMotor.class, "FR");
         blMotor = hardwareMap.get(DcMotor.class, "BL");
         brMotor = hardwareMap.get(DcMotor.class, "BR");
 
-        liftMotor = hardwareMap.get(DcMotor.class, "LIFT");
-
-        // Initialize servos
+        // Initialize servos Heheheh
         leftServo = hardwareMap.get(Servo.class, "LS");
         rightServo = hardwareMap.get(Servo.class, "RS");
         hookServo1 = hardwareMap.get(Servo.class, "HOOK1");
         hookServo2 = hardwareMap.get(Servo.class, "HOOK2");
 
-        // Set motor directions
+        // Set motor directions UwU
         flMotor.setDirection(DcMotor.Direction.FORWARD);
         frMotor.setDirection(DcMotor.Direction.REVERSE);
         blMotor.setDirection(DcMotor.Direction.FORWARD);
         brMotor.setDirection(DcMotor.Direction.REVERSE);
-        liftMotor.setDirection(DcMotor.Direction.FORWARD);
 
-        // Set all motors to brake when power is zero
+        // Set all motors to brake when power is zero OwO
         flMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         frMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         blMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         brMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        liftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
     }
 
